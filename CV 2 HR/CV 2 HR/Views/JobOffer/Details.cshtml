@@ -1,0 +1,15 @@
+﻿@using CV_2_HR.Models
+@model JobOffer
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Offer details</h2>
+
+<p>@Model.JobTitle</p>
+<p>@Model.Salary</p>
+<p>@Model.Description</p>
+<p>@Html.ActionLink("Back", "Index")</p>
+
+

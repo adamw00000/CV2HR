@@ -1,0 +1,15 @@
+﻿@using CV_2_HR.Models
+@model List<JobOffer>
+
+@{
+    ViewData["Title"] = "Job Offers";
+}
+
+<h2>Job offers:</h2>
+
+<ul>
+    @foreach (var offer in Model)
+    {
+        <li>@offer.Id @Html.ActionLink(offer.JobTitle, "Details", "JobOffer", new { id = offer.Id })</li>
+    }
+</ul>
