@@ -1,15 +1,58 @@
-﻿@using CV_2_HR.Models
-@model JobOffer
+﻿@model JobOffer
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Offer details";
 }
 
-<h2>Offer details:</h2>
-
-<p>@Model.JobTitle</p>
-<p>@Model.Salary</p>
-<p>@Model.Description</p>
-<p>@Html.ActionLink("Back", "Index")</p>
+<div class="row row-box">
+    <h1>@Model.JobTitle</h1>
+    <div class="col-md-8">
+        <div class="offer-description" id="previewMarkdown">
+            @Html.DisplayFor(m => m.Description)
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="offer-details">
+            <div>
+                <label asp-for="Company">Company:</label>
+                @Html.DisplayFor(m => m.Company.Name)
+            </div>
+            <div>
+                <label asp-for="Location">Location:</label>
+                @Html.DisplayFor(m => m.Location)
+            </div>
+            @if (Model.SalaryFrom.HasValue)
+            {
+                <div>
+                    <label asp-for="SalaryFrom">Salary from:</label>
+                    @Html.DisplayFor(m => m.SalaryFrom) (PLN)
+                </div>
+            }
+            @if (Model.SalaryTo.HasValue)
+            {
+                <div>
+                    <label asp-for="SalaryTo">Salary to:</label>
+                    @Html.DisplayFor(m => m.SalaryTo) (PLN)
+                </div>
+            }
+            <div>
+                <label asp-for="Created">Created:</label>
+                @Html.DisplayFor(m => m.Created)
+            </div>
+            @if (Model.ValidUntil.HasValue)
+            {
+                <div>
+                    <label>Valid:</label>
+                    <span>@Model.ValidUntil.Value.Subtract(DateTime.Now).Days days (@Model.ValidUntil)</span>
+                </div>
+            }
+            @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-primary" })
+            <form asp-action="Delete" style="display:inline">
+                <input asp-for="Id" type="hidden" />
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+        </div>
+    </div>
+</div>
 
 

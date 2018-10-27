@@ -1,0 +1,67 @@
+﻿@model JobOfferCreateViewModel
+
+@{
+    ViewData["Title"] = "Create offer";
+}
+
+<div class="row row-box">
+    <div class="col-md-12">
+        <h2>Create new job offer:</h2>
+
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger" />
+            <div class="form-group">
+                <label asp-for="JobTitle" class="control-label"></label>
+                <input asp-for="JobTitle" class="form-control" />
+                <span asp-validation-for="JobTitle" class="text-danger" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Company" class="control-label"></label>
+                <select asp-for="CompanyId" asp-items="@(new SelectList(Model.Companies, "Id", "Name"))" class="form-control" required>
+                    <option disabled selected hidden value="">Select a company...</option>
+                </select>
+                <span asp-validation-for="CompanyId" class="text-danger" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Location" class="control-label"></label>
+                <input asp-for="Location" class="form-control" />
+                <span asp-validation-for="Location" class="text-danger" />
+            </div>
+            <div class="form-group">
+                <label asp-for="SalaryFrom" class="control-label">Salary</label>
+                <div class="input-group">
+                    <span class="input-group-addon">PLN</span>
+                    <input asp-for="SalaryFrom" class="form-control" placeholder="From" />
+                </div>
+                <span asp-validation-for="SalaryFrom" class="text-danger" />
+            </div>
+            <div class="form-group">
+                <label asp-for="SalaryTo" class="control-label">Salary</label>
+                <div class="input-group">
+                    <span class="input-group-addon">PLN</span>
+                    <input asp-for="SalaryTo" class="form-control" placeholder="To" />
+                </div>
+                <span asp-validation-for="SalaryTo" class="text-danger" />
+            </div>
+            <div class="form-group">
+                <label asp-for="ValidUntil" class="control-label"></label>
+                <div class="input-group">
+                    <input asp-for="ValidUntil" class="form-control" type="date" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+                <span asp-validation-for="ValidUntil" class="text-danger" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control"  placeholder="Enter description (min. 100 characters)"></textarea>
+                <span asp-validation-for="Description" class="text-danger" />
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Create</button>
+            </div>
+        </form>
+
+    </div>
+</div>
