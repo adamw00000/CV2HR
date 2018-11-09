@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CV_2_HR.EF_Core;
+using CV_2_HR.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -31,8 +34,12 @@ namespace CV_2_HR
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            var connection = @"Server=(localdb)\mssqllocaldb;Database=CV2HR;Trusted_Connection=True;";
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connection));
+
+            services.AddScoped<IAdminService, AdminService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

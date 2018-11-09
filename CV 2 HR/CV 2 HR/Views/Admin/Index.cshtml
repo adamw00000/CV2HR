@@ -1,0 +1,32 @@
+﻿@model List<Company>
+
+@{
+    ViewData["Title"] = "Admin panel";
+}
+
+<div class="row page-box">
+    <div class="col-md-12">
+        <h2>Companies:</h2>
+        <table class="table table-hover table-striped">
+            <thead>
+                <tr>
+                    <th class="col col-md-11">@Html.LabelFor(m => m.First().Name)</th>
+                    <th class="col col-md-1">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var company in Model)
+                {
+                    <tr>
+                        <td>@company.Name</td>
+                        <td>
+                            <a asp-action="RemoveCompany" asp-route-id="@company.Id" class="btn btn-danger">Remove</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        @Html.ActionLink("Add company", "AddCompany", new { }, new { @class = "btn btn-primary" })
+    </div>
+</div>

@@ -1,9 +1,14 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <RootNamespace>CV_2_HR</RootNamespace>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20181109073731_InitDatabase.cs" />
+    <Compile Remove="Migrations\20181109073731_InitDatabase.Designer.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="bootstrap" Version="3.3.7" />

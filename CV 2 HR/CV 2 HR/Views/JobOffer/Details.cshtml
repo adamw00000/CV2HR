@@ -46,7 +46,11 @@
                     <span>@Model.ValidUntil.Value.Subtract(DateTime.Now).Days days (@Model.ValidUntil)</span>
                 </div>
             }
-            @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-primary" })
+            <form asp-action="Apply">
+                <input asp-for="Id" type="hidden" />
+                <button type="submit" class="btn btn-success">Apply</button>
+            </form>
+            <a asp-action="Edit" , asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
             <form asp-action="Delete" style="display:inline">
                 <input asp-for="Id" type="hidden" />
                 <button type="submit" class="btn btn-danger">Delete</button>
