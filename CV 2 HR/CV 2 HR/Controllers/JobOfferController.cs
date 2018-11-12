@@ -3,67 +3,47 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CV_2_HR.Models;
+using CV_2_HR.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CV_2_HR.Controllers
 {
     public class JobOfferController : Controller
     {
-        private static readonly List<Company> companies = new List<Company>
-        {
-            new Company(){Id = 1, Name = "Predica"},
-            new Company(){Id = 2, Name = "Microsoft"},
-            new Company(){Id = 3, Name = "GitHub"}
-        };
+        private IJobOfferService _offerService;
+        private ICompanyService _companyService;
 
-        private static readonly List<JobOffer> jobOffers = new List<JobOffer>
+        public JobOfferController(IJobOfferService offerService, ICompanyService companyService)
         {
-            new JobOffer()
-            {
-                Id = 1,
-                JobTitle = "Backend Developer",
-                Company = companies.FirstOrDefault(c => c.Name == "Predica"),
-                Created = DateTime.Now.AddDays(-2),
-                Description = "aaa bbbbb cccccccc dddddddddd aaaaaaaa bbbbb ccccc ddd aaa bbbbb cccccccc dddddddddd aaaaaaaa bbbbb ccccc ddd aaa bbbbb cccccccc dddddddddd aaaaaaaa bbbbb ccccc ddd aaa bbbbb cccccccc dddddddddd aaaaaaaa bbbbb ccccc ddd",
-                Location = "Poland",
-                SalaryFrom = 15000,
-                SalaryTo = 20000,
-                ValidUntil = DateTime.Now.AddDays(10)
-            },
-            new JobOffer()
-            {
-                Id = 2,
-                JobTitle = "Frontend Developer",
-                Company = companies.FirstOrDefault(c => c.Name == "Microsoft"),
-                Created = DateTime.Now.AddDays(-7),
-                Description = "bbbbbbbbbbbbbbbbbbb aaaaaaaa bbbbb ccccc ddd aaa bbbbb cccccccc xxxxxxxxxxxxxxxxxxxxxxxxxxxxx cccccccc dddddddddd bbbbbbbbbbbbb",
-                Location = "Poland",
-                SalaryFrom = 5000,
-                SalaryTo = 7000,
-                ValidUntil = DateTime.Now.AddDays(3)
-            }
-        };
+            _offerService = offerService;
+            _companyService = companyService;
+        }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            var jobOffers = await _offerService.GetJobOffersAsync();
+
             return View(jobOffers);
         }
-        
-        public IActionResult Details(int id)
+
+        public async Task<IActionResult> Details(int id)
         {
-            return View(jobOffers.FirstOrDefault(job => job.Id == id));
+            var offer = await _offerService.GetOfferWithApplicationsAsync(id);
+
+            return View(offer);
         }
-        
-        public IActionResult Edit(int? id)
+
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
                 return BadRequest();
 
-            JobOffer jobOffer = jobOffers.FirstOrDefault(offer => offer.Id == id);
-            if (jobOffer == null)
+            var offer = await _offerService.GetOfferAsync(id.Value);
+
+            if (offer == null)
                 return NotFound();
 
-            return View(jobOffer);
+            return View(offer);
         }
 
         [HttpPost]
@@ -72,13 +52,13 @@ namespace CV_2_HR.Controllers
         {
             if (!ModelState.IsValid)
                 return View();
+            
+            bool succeeded = await _offerService.ModifyOffer(newOffer);
 
-            var oldOffer = jobOffers.FirstOrDefault(offer => offer.Id == newOffer.Id);
-            oldOffer.JobTitle = newOffer.JobTitle;
-            oldOffer.Description = newOffer.Description;
-            oldOffer.SalaryFrom = newOffer.SalaryFrom;
-            oldOffer.SalaryTo = newOffer.SalaryTo;
-            return RedirectToAction("Details", new { id = oldOffer.Id });
+            if (!succeeded)
+                return StatusCode(500);
+
+            return RedirectToAction("Details", new { id = newOffer.Id });
         }
 
         [HttpPost]
@@ -88,17 +68,25 @@ namespace CV_2_HR.Controllers
             if (id == null)
                 return BadRequest();
 
-            var jobOffer = jobOffers.FirstOrDefault(offer => offer.Id == id);
-            if (jobOffer != null)
-            {
-                jobOffers.Remove(jobOffer);
-            }
+            var offer = await _offerService.GetOfferAsync(id.Value);
+
+            if (offer == null)
+                return NotFound();
+
+            bool succeeded = await _offerService.RemoveOffer(offer);
+
+            if (!succeeded)
+                return StatusCode(500);
+
             return RedirectToAction("Index");
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var companies = await _companyService.GetCompaniesAsync();
+
             var model = new JobOfferCreateViewModel() { Companies = companies };
+
             return View(model);
         }
 
@@ -108,25 +96,47 @@ namespace CV_2_HR.Controllers
         {
             if (!ModelState.IsValid)
                 return View(model);
+            
+            bool succeeded = await _offerService.AddJobOfferAsync(model as JobOffer);
 
-            model.Id = jobOffers.Max(offer => offer.Id) + 1;
-            model.Created = DateTime.Now;
-            model.Company = companies.FirstOrDefault(company => company.Id == model.CompanyId);
-
-            jobOffers.Add(model as JobOffer);
+            if (!succeeded)
+                return StatusCode(500);
 
             return RedirectToAction("Index");
         }
         
-        [HttpGet]
-        public async Task<IActionResult> Index([FromQuery(Name = "search")]string query)
+        public async Task<IActionResult> AddApplication(int id)
         {
-            if (string.IsNullOrEmpty(query))
-                return View(jobOffers);
+            var jobApplication = new JobApplication { OfferId = id };
 
-            var queryResult = jobOffers.FindAll(offer => offer.JobTitle.ToLower().Contains(query.ToLower()));
+            var offer = await _offerService.GetOfferAsync(id);
+            jobApplication.Offer = offer;
+            return View(jobApplication);
+        }
 
-            return View(queryResult);
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddApplication(JobApplication jobApplication)
+        {
+            if (!ModelState.IsValid)
+                return View(jobApplication);
+
+            bool succeeded = await _offerService.AddJobApplicationAsync(jobApplication);
+
+            if (!succeeded)
+                return StatusCode(500);
+
+            return RedirectToAction("Details", new { Id = jobApplication.OfferId });
+        }
+
+        public async Task<IActionResult> ApplicationDetails(int? id)
+        {
+            if (id == null)
+                return BadRequest();
+
+            var application = await _offerService.GetJobApplicationAsync(id.Value);
+
+            return View(application);
         }
     }
 }

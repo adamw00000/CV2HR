@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace CV_2_HR.Services
 {
-    public interface IAdminService
+    public interface ICompanyService
     {
         Task<IEnumerable<Company>> GetCompaniesAsync();
         Task<bool> AddCompanyAsync(Company newCompany);
-        Task<bool> RemoveCompany(Company removedCompany);
+        Task<bool> RemoveCompanyAsync(Company removedCompany);
     }
 }

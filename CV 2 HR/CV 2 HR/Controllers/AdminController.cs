@@ -10,21 +10,21 @@ namespace CV_2_HR.Controllers
 {
     public class AdminController : Controller
     {
-        private readonly IAdminService service;
+        private readonly ICompanyService _companyService;
 
-        public AdminController(IAdminService companyService)
+        public AdminController(ICompanyService companyService)
         {
-            service = companyService;
+            _companyService = companyService;
         }
 
         public async Task<IActionResult> Index()
         {
-            var companies = await service.GetCompaniesAsync();
+            var companies = await _companyService.GetCompaniesAsync();
 
             return View(companies);
         }
 
-        public async Task<IActionResult> AddCompany()
+        public IActionResult AddCompany()
         {
             return View();
         }
@@ -35,7 +35,7 @@ namespace CV_2_HR.Controllers
             if (!ModelState.IsValid)
                 return View(newCompany);
 
-            bool succeeded = await service.AddCompanyAsync(newCompany);
+            bool succeeded = await _companyService.AddCompanyAsync(newCompany);
             
             if (!succeeded)
             {
@@ -50,7 +50,7 @@ namespace CV_2_HR.Controllers
             if (!ModelState.IsValid)
                 return RedirectToAction("Index");
 
-            bool succeeded = await service.RemoveCompany(removedCompany);
+            bool succeeded = await _companyService.RemoveCompanyAsync(removedCompany);
 
             if (!succeeded)
             {

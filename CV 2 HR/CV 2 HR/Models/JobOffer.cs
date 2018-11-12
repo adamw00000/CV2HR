@@ -34,6 +34,6 @@ namespace CV_2_HR.Models
         [Display(Name = "Valid until")]
         public DateTime? ValidUntil { get; set; }
 
-        public List<JobApplication> JobApplications { get; set; } = new List<JobApplication>();
+        public virtual ICollection<JobApplication> JobApplications { get; set; }
     }
 }

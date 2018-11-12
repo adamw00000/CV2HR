@@ -1,0 +1,38 @@
+﻿@model  JobApplication
+
+@{
+    ViewData["Title"] = "Application details";
+}
+
+<div class="row row-box">
+    <div class="col-md-12">
+        <h2>@Model.FirstName @Model.LastName</h2>
+        <div class="form-group">
+            <label asp-for="@Model.CvUrl" class="control-label"></label>
+            <div>
+                @Html.DisplayFor(m => m.CvUrl)
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.EmailAddress" class="control-label"></label>
+            <div>
+                @Html.DisplayFor(m => m.EmailAddress)
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.PhoneNumber" class="control-label"></label>
+            <div>
+                @Html.DisplayFor(m => m.PhoneNumber)
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.ContactAgreement" class="control-label"></label>
+            <div>
+                @Html.DisplayFor(m => m.ContactAgreement)
+            </div>
+        </div>
+        <div class="form-group">
+            <a asp-action="Details" asp-route-id="@Model.OfferId" class="btn btn-primary">Return to offer</a>
+        </div>
+    </div>
+</div>

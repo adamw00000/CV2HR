@@ -1,0 +1,51 @@
+﻿@model JobApplication
+
+@{
+    ViewData["Title"] = "Apply";
+}
+
+<div class="row page-box">
+    <div class="col-md-12">
+        <h2>Apply for <span class="text-primary">@Model.Offer.JobTitle</span></h2>
+        <form asp-action="AddApplication" method="post">
+            <input asp-for="@Model.OfferId" type="hidden" />
+            <div class="form-group">
+                <label asp-for="@Model.FirstName" class="control-label"></label>
+                <input asp-for="@Model.FirstName" class="form-control" />
+                <span asp-validation-for="@Model.FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.LastName" class="control-label"></label>
+                <input asp-for="@Model.LastName" class="form-control" />
+                <span asp-validation-for="@Model.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.EmailAddress" class="control-label"></label>
+                <input asp-for="@Model.EmailAddress" class="form-control" />
+                <span asp-validation-for="@Model.EmailAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.PhoneNumber" class="control-label"></label>
+                <input asp-for="@Model.PhoneNumber" class="form-control" />
+                <span asp-validation-for="@Model.PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.CvUrl" class="control-label"></label>
+                <input asp-for="@Model.CvUrl" class="form-control" />
+                <span asp-validation-for="@Model.CvUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.ContactAgreement" class="control-label"></label>
+                <div class="checkbox">
+                    <label for="agreementCheckbox">
+                        <input asp-for="@Model.ContactAgreement" id="agreementCheckbox" />
+                        I agree to receive information regarding this job application
+                    </label>
+                </div>
+                <span asp-validation-for="@Model.ContactAgreement" class="text-danger"></span>
+            </div>
+            <input type="submit" class="btn btn-primary" value="Submit" />
+        </form>
+    </div>
+</div>
+

@@ -39,9 +39,9 @@ namespace CV_2_HR
             var connection = @"Server=(localdb)\mssqllocaldb;Database=CV2HR;Trusted_Connection=True;";
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connection));
 
-            services.AddScoped<IAdminService, AdminService>();
+            services.AddScoped<ICompanyService, CompanyService>();
+            services.AddScoped<IJobOfferService, JobOfferService>();
         }
-
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
