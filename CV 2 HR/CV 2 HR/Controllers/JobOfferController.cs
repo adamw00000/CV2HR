@@ -95,7 +95,11 @@ namespace CV_2_HR.Controllers
         public async Task<IActionResult> Create(JobOfferCreateViewModel model)
         {
             if (!ModelState.IsValid)
+            {
+                var companies = await _companyService.GetCompaniesAsync();
+                model.Companies = companies;
                 return View(model);
+            }
             
             bool succeeded = await _offerService.AddJobOfferAsync(model as JobOffer);
 
