@@ -15,7 +15,7 @@ namespace CV_2_HR.Models
         public string JobTitle { get; set; }
 
         public virtual Company Company { get; set; }
-        public virtual int CompanyId { get; set; }
+        public int CompanyId { get; set; }
 
         [Display(Name = "Salary from")]
         public decimal? SalaryFrom { get; set; }

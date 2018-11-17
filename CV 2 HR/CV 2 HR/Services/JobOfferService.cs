@@ -35,6 +35,14 @@ namespace CV_2_HR.Services
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<JobOffer>> GetJobOffersSearchResultAsync(string searchstring)
+        {
+            return await _context.JobOffers
+                .Where(offer => offer.JobTitle.ToLower().Contains(searchstring.ToLower()))
+                .Include(offer => offer.Company)
+                .ToListAsync();
+        }
+
         public async Task<JobOffer> GetOfferAsync(int id)
         {
             return await _context.JobOffers
@@ -44,8 +52,9 @@ namespace CV_2_HR.Services
         public async Task<JobOffer> GetOfferWithApplicationsAsync(int id)
         {
             return await _context.JobOffers
+                .Where(offer => offer.Id == id)
                 .Include(offer => offer.JobApplications)
-                .FirstOrDefaultAsync(offer => offer.Id == id);
+                .FirstOrDefaultAsync();
         }
 
         public async Task<bool> ModifyOffer(JobOffer newOffer)
