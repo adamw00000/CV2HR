@@ -17,14 +17,6 @@ namespace CV_2_HR.Services
             _context = context;
         }
 
-        public async Task<bool> AddJobApplicationAsync(JobApplication jobApplication)
-        {
-            await _context.JobApplications.AddAsync(jobApplication);
-            var modified = await _context.SaveChangesAsync();
-
-            return modified == 1;
-        }
-
         public async Task<bool> AddJobOfferAsync(JobOffer jobOffer)
         {
             jobOffer.Created = DateTime.Now;
@@ -34,12 +26,6 @@ namespace CV_2_HR.Services
             var modified = await _context.SaveChangesAsync();
 
             return modified == 1;
-        }
-
-        public async Task<JobApplication> GetJobApplicationAsync(int id)
-        {
-            return await _context.JobApplications
-                .FirstOrDefaultAsync(application => application.Id == id);
         }
 
         public async Task<IEnumerable<JobOffer>> GetJobOffersAsync()

@@ -108,39 +108,5 @@ namespace CV_2_HR.Controllers
 
             return RedirectToAction("Index");
         }
-        
-        public async Task<IActionResult> AddApplication(int id)
-        {
-            var jobApplication = new JobApplication { OfferId = id };
-
-            var offer = await _offerService.GetOfferAsync(id);
-            jobApplication.Offer = offer;
-            return View(jobApplication);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddApplication(JobApplication jobApplication)
-        {
-            if (!ModelState.IsValid)
-                return View(jobApplication);
-
-            bool succeeded = await _offerService.AddJobApplicationAsync(jobApplication);
-
-            if (!succeeded)
-                return StatusCode(500);
-
-            return RedirectToAction("Details", new { Id = jobApplication.OfferId });
-        }
-
-        public async Task<IActionResult> ApplicationDetails(int? id)
-        {
-            if (id == null)
-                return BadRequest();
-
-            var application = await _offerService.GetJobApplicationAsync(id.Value);
-
-            return View(application);
-        }
     }
 }

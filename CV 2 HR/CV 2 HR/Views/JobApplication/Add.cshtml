@@ -7,7 +7,7 @@
 <div class="row page-box">
     <div class="col-md-12">
         <h2>Apply for <span class="text-primary">@Model.Offer.JobTitle</span></h2>
-        <form asp-action="AddApplication" method="post">
+        <form asp-action="Add" method="post">
             <input asp-for="@Model.OfferId" type="hidden" />
             <div class="form-group">
                 <label asp-for="@Model.FirstName" class="control-label"></label>

@@ -48,13 +48,13 @@
                     </div>
                 }
             </div>
-            <form asp-action="AddApplication" method="get">
+            <form asp-action="Add" asp-controller="JobApplication" method="get">
                 <div class="form-group">
                     <input asp-for="Id" type="hidden" />
                     <button type="submit" class="btn btn-success">Apply Now</button>
                 </div>
             </form>
-            <a asp-action="Edit" , asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
             <form asp-action="Delete" style="display:inline">
                 <input asp-for="Id" type="hidden" />
                 <button type="submit" class="btn btn-danger">Delete</button>
@@ -78,7 +78,7 @@
                 {
                     <tr>
                         <td>
-                            <a asp-action="ApplicationDetails" asp-route-id="@application.Id">@application.FirstName @application.LastName</a>
+                            <a asp-action="Details" asp-controller="JobApplication" asp-route-id="@application.Id">@application.FirstName @application.LastName</a>
                         </td>
                         <td>@application.EmailAddress</td>
                         <td>@application.PhoneNumber</td>

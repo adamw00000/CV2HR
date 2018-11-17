@@ -8,8 +8,6 @@ namespace CV_2_HR.Services
 {
     public interface IJobOfferService
     {
-        Task<bool> AddJobApplicationAsync(JobApplication jobApplication);
-        Task<JobApplication> GetJobApplicationAsync(int id);
         Task<bool> AddJobOfferAsync(JobOffer jobOffer);
         Task<IEnumerable<JobOffer>> GetJobOffersAsync();
         Task<JobOffer> GetOfferAsync(int id);
