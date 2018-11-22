@@ -33,7 +33,11 @@ namespace CV_2_HR.Controllers
         public async Task<IActionResult> Add(JobApplication jobApplication)
         {
             if (!ModelState.IsValid)
+            {
+                var offer = await _offerService.GetOfferAsync(jobApplication.OfferId);
+                jobApplication.Offer = offer;
                 return View(jobApplication);
+            }
 
             bool succeeded = await _applicationService.AddJobApplicationAsync(jobApplication);
 

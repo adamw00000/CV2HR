@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CV_2_HR.Models
 {
-    public class JobOffer
+    public class JobOffer: IValidatableObject
     {
         public int Id { get; set; }
 
@@ -19,14 +19,15 @@ namespace CV_2_HR.Models
 
         [Display(Name = "Salary from")]
         public decimal? SalaryFrom { get; set; }
-
+        
         [Display(Name = "Salary to")]
         public decimal? SalaryTo { get; set; }
 
         public DateTime Created { get; set; }
         public string Location { get; set; }
 
-        [Required][MinLength(100)]
+        [Required]
+        [MinLength(100)]
         public string Description { get; set; }
 
         [DataType(DataType.Date)]
@@ -35,5 +36,25 @@ namespace CV_2_HR.Models
         public DateTime? ValidUntil { get; set; }
 
         public virtual ICollection<JobApplication> JobApplications { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (SalaryFrom > SalaryTo)
+            {
+                yield return new ValidationResult("Salary to must be equal or greater than salary from.", new[] { "SalaryTo" });
+            }
+            if (SalaryFrom <= 0)
+            {
+                yield return new ValidationResult("Salary must be greater than 0.", new[] { "SalaryFrom" });
+            }
+            if (SalaryTo <= 0)
+            {
+                yield return new ValidationResult("Salary must be greater than 0.", new[] { "SalaryTo" });
+            }
+            if (ValidUntil < DateTime.Now)
+            {
+                yield return new ValidationResult("Valid until cannot be a past date", new[] { "ValidUntil" });
+            }
+        }
     }
 }
