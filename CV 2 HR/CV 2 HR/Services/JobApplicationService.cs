@@ -31,5 +31,11 @@ namespace CV_2_HR.Services
                 .FirstOrDefaultAsync(application => application.Id == id);
         }
 
+        public async Task<IEnumerable<JobApplication>> GetOfferApplicationsAsync(int id)
+        {
+            return await _context.JobApplications
+                .Where(application => application.OfferId == id)
+                .ToListAsync();
+        }
     }
 }

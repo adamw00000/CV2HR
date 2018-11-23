@@ -10,5 +10,6 @@ namespace CV_2_HR.Services
     {
         Task<bool> AddJobApplicationAsync(JobApplication jobApplication);
         Task<JobApplication> GetJobApplicationAsync(int id);
+        Task<IEnumerable<JobApplication>> GetOfferApplicationsAsync(int id);
     }
 }

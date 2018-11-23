@@ -75,8 +75,8 @@
                     <td>Phone</td>
                 </tr>
             </thead>
-            <tbody>
-                @foreach (var application in Model.JobApplications)
+            <tbody id="applications">
+                @*@foreach (var application in Model.JobApplications)
                 {
                     <tr>
                         <td>
@@ -85,10 +85,33 @@
                         <td>@application.EmailAddress</td>
                         <td>@application.PhoneNumber</td>
                     </tr>
-                }
+                }*@
             </tbody>
         </table>
     </div>
 </div>
+
+@section Scripts {
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            uri = '/api/applications/' + '@Model.Id';
+
+            $.getJSON(uri)
+                .done(function (data) {
+                    $.each(data, function (key, application) {
+                        $('<tr>' +
+                            '<td><a href="/JobApplication/Details/' + application.id + '">' + application.firstName + ' ' + application.lastName + '</a></td>' +
+                            '<td>' + application.emailAddress + '</td>' +
+                            '<td>' + application.phoneNumber + '</td>' +
+                            '</tr>').appendTo('#applications');
+                    })
+                }
+            )
+        }
+        );
+    </script>
+}
 
 

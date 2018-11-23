@@ -26,19 +26,19 @@ namespace CV_2_HR.Controllers
             return View(jobOffers);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Index([FromQuery(Name = "search")] string searchstring)
-        {
-            if (String.IsNullOrEmpty(searchstring))
-            {
-                var jobOffers = await _offerService.GetJobOffersAsync();
-                return View(jobOffers);
-            }
+        //[HttpGet]
+        //public async Task<IActionResult> Index([FromQuery(Name = "search")] string searchstring)
+        //{
+        //    if (String.IsNullOrEmpty(searchstring))
+        //    {
+        //        var jobOffers = await _offerService.GetJobOffersAsync();
+        //        return View(jobOffers);
+        //    }
 
-            var searchResult = await _offerService.GetJobOffersSearchResultAsync(searchstring);
+        //    var searchResult = await _offerService.GetJobOffersSearchResultAsync(searchstring);
 
-            return View(searchResult);
-        }
+        //    return View(searchResult);
+        //}
 
         public async Task<IActionResult> Details(int id)
         {
