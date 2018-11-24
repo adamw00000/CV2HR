@@ -35,14 +35,6 @@ namespace CV_2_HR.Services
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<JobOffer>> GetJobOffersSearchResultAsync(string searchstring)
-        {
-            return await _context.JobOffers
-                .Where(offer => offer.JobTitle.ToLower().Contains(searchstring.ToLower()))
-                .Include(offer => offer.Company)
-                .ToListAsync();
-        }
-
         public async Task<JobOffer> GetOfferAsync(int id)
         {
             return await _context.JobOffers
@@ -76,6 +68,56 @@ namespace CV_2_HR.Services
             
             var modified = await _context.SaveChangesAsync();
             return modified == 1;
+        }
+
+        public async Task<JobOfferPage> GetJobOffersSearchResultPageAsync(string searchstring, int pageNo)
+        {
+            int pages, records, pageSize;
+            pageSize = 1;
+
+            records = _context.JobOffers
+                .Where(offer => offer.JobTitle.ToLower().Contains(searchstring.ToLower()))
+                .Count();
+            pages = (records / pageSize) + ((records % pageSize) > 0 ? 1 : 0);
+
+            var offers = await _context.JobOffers
+                .Where(offer => offer.JobTitle.ToLower().Contains(searchstring.ToLower()))
+                .OrderBy(offer => offer.Created)
+                .Skip((pageNo - 1) * pageSize)
+                .Take(pageSize)
+                .Include(offer => offer.Company)
+                .ToListAsync();
+
+            JobOfferPage page = new JobOfferPage
+            {
+                JobOffers = offers,
+                Pages = pages
+            };
+
+            return page;
+        }
+
+        public async Task<JobOfferPage> GetJobOffersPageAsync(int pageNo)
+        {
+            int pages, records, pageSize;
+            pageSize = 1;
+
+            records = _context.JobOffers.Count();
+            pages = (records / pageSize) + ((records % pageSize) > 0 ? 1 : 0);
+            var offers = await _context.JobOffers
+                .OrderBy(offer => offer.Created)
+                .Skip((pageNo - 1) * pageSize)
+                .Take(pageSize)
+                .Include(offer => offer.Company)
+                .ToListAsync();
+
+            JobOfferPage page = new JobOfferPage
+            {
+                JobOffers = offers,
+                Pages = pages
+            };
+
+            return page;
         }
     }
 }

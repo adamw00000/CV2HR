@@ -14,6 +14,7 @@ namespace CV_2_HR.Services
         Task<JobOffer> GetOfferWithApplicationsAsync(int id);
         Task<bool> ModifyOffer(JobOffer newOffer);
         Task<bool> RemoveOffer(JobOffer newOffer);
-        Task<IEnumerable<JobOffer>> GetJobOffersSearchResultAsync(string searchstring);
+        Task<JobOfferPage> GetJobOffersSearchResultPageAsync(string searchstring, int pageNo);
+        Task<JobOfferPage> GetJobOffersPageAsync(int pageNo);
     }
 }

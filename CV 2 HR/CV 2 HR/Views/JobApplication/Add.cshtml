@@ -7,38 +7,38 @@
 <div class="row page-box">
     <div class="col-md-12">
         <h2>Apply for <span class="text-primary">@Model.Offer.JobTitle</span></h2>
-        <form asp-action="Add" method="post">
+        <form asp-action="Add" method="post" id="addForm">
             <input asp-for="OfferId" type="hidden" />
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
+                <input asp-for="FirstName" class="form-control" required />
                 <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
+                <input asp-for="LastName" class="form-control" required />
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="EmailAddress" class="control-label"></label>
-                <input asp-for="EmailAddress" class="form-control" />
+                <input asp-for="EmailAddress" class="form-control" required email />
                 <span asp-validation-for="EmailAddress" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PhoneNumber" class="control-label"></label>
-                <input asp-for="PhoneNumber" class="form-control" />
+                <input asp-for="PhoneNumber" class="form-control" required phonePL />
                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="CvUrl" class="control-label"></label>
-                <input asp-for="CvUrl" class="form-control" />
+                <input asp-for="CvUrl" class="form-control" required url />
                 <span asp-validation-for="CvUrl" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ContactAgreement" class="control-label"></label>
                 <div class="checkbox">
                     <label for="agreementCheckbox">
-                        <input asp-for="ContactAgreement" id="agreementCheckbox" />
+                        <input asp-for="ContactAgreement" id="agreementCheckbox" required />
                         I agree to receive information regarding this job application
                     </label>
                 </div>
@@ -49,3 +49,10 @@
     </div>
 </div>
 
+
+@section Scripts {
+    <script src="https://raw.githubusercontent.com/jquery-validation/jquery-validation/master/src/additional/phonePL.js"></script>
+    <script>
+        $("#addForm").validate();
+    </script>
+}

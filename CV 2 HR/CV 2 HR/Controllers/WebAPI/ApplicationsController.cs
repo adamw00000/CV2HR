@@ -19,6 +19,11 @@ namespace CV_2_HR.Controllers
             _applicationService = applicationService;
         }
 
+        /// <summary>
+        /// Gets list of applications for the job offer
+        /// </summary>
+        /// <param name="offerId">Job offer id</param>
+        /// <returns>A list of applications</returns>
         [HttpGet("{offerId}")]
         public async Task<IActionResult> Applications(int offerId)
         {

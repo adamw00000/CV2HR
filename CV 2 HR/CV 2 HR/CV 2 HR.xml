@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CV 2 HR</name>
+    </assembly>
+    <members>
+        <member name="M:CV_2_HR.Controllers.ApplicationsController.Applications(System.Int32)">
+            <summary>
+            Gets list of applications for the job offer
+            </summary>
+            <param name="offerId">Job offer id</param>
+            <returns>A list of applications</returns>
+        </member>
+        <member name="M:CV_2_HR.Controllers.OffersController.Offers">
+            <summary>
+            Gets a list of all job offers
+            </summary>
+            <returns>A list of job offers</returns>
+        </member>
+        <member name="M:CV_2_HR.Controllers.OffersController.Offers(System.String,System.Int32)">
+            <summary>
+            Gets a portion of job offers matching the search string, paged
+            </summary>
+            <param name="searchString">Search string to match</param>
+            <param name="pageNo">Page number</param>
+            <returns>A job offer page</returns>
+        </member>
+        <member name="M:CV_2_HR.Controllers.OffersController.Offers(System.Int32)">
+            <summary>
+            Gets a portion of all job offers, paged
+            </summary>
+            <param name="pageNo">Page number</param>
+            <returns>A job offer page</returns>
+        </member>
+    </members>
+</doc>

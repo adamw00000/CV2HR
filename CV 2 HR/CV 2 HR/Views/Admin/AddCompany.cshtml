@@ -8,10 +8,10 @@
     <div class="col col-md-12">
         <h2>Add new company:</h2>
 
-        <form asp-action="AddCompany" method="post">
+        <form asp-action="AddCompany" method="post" id="addForm">
             <div class="form-group">
                 <label class="control-label" asp-for="Name"></label>
-                <input class="form-control" asp-for="Name" />
+                <input class="form-control" asp-for="Name" required/>
                 <span class="text-danger" asp-validation-for="Name"></span>
             </div>
             <button class="btn btn-primary" type="submit">Add</button>
@@ -19,3 +19,8 @@
     </div>
 </div>
 
+@section Scripts {
+    <script>
+        $("#addForm").validate();
+    </script>
+}

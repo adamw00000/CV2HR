@@ -20,18 +20,40 @@ namespace CV_2_HR.Controllers
             _offerService = offerService;
         }
 
+        /// <summary>
+        /// Gets a list of all job offers
+        /// </summary>
+        /// <returns>A list of job offers</returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<JobOffer>>> Offers()
+        public async Task<IActionResult> Offers()
         {
             var offers = await _offerService.GetJobOffersAsync();
             return Ok(offers);
         }
 
-        [HttpGet("{searchString}")]
-        public async Task<ActionResult<IEnumerable<JobOffer>>> Offers(string searchString)
+        /// <summary>
+        /// Gets a portion of job offers matching the search string, paged
+        /// </summary>
+        /// <param name="searchString">Search string to match</param>
+        /// <param name="pageNo">Page number</param>
+        /// <returns>A job offer page</returns>
+        [HttpGet("{searchString}/{pageNo}")]
+        public async Task<IActionResult> Offers(string searchString, int pageNo)
         {
-            var offers = await _offerService.GetJobOffersSearchResultAsync(searchString);
+            var offers = await _offerService.GetJobOffersSearchResultPageAsync(searchString, pageNo);
             return Ok(offers);
+        }
+
+        /// <summary>
+        /// Gets a portion of all job offers, paged
+        /// </summary>
+        /// <param name="pageNo">Page number</param>
+        /// <returns>A job offer page</returns>
+        [HttpGet("{pageNo}")]
+        public async Task<IActionResult> Offers(int pageNo)
+        {
+            var page = await _offerService.GetJobOffersPageAsync(pageNo);
+            return Ok(page);
         }
     }
 }
