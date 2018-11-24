@@ -67,14 +67,22 @@
             });
             $('#offers').on('click', '.footerContent a', function (e) {
                 e.preventDefault();
-                var pageNo = parseInt($(this).html());
+
+                var pageNo;
+                if ($(this).html().includes('Previous'))
+                    pageNo = currentPage - 1;
+                else if ($(this).html().includes('Next'))
+                    pageNo = currentPage + 1;
+                else
+                    pageNo = parseInt($(this).html());
+
                 currentPage = pageNo;
                 fetchData(searchString, currentPage);
             });
 
             function fetchData(searchString, pageNo) {
                 var uri;
-                if (searchString == '')
+                if (searchString === '')
                     uri = 'api/offers/' + pageNo;
                 else
                     uri = 'api/offers/' + searchString + '/' + pageNo;
@@ -93,15 +101,46 @@
                         });
 
                         var totalPage = parseInt(data.pages);
+                        
                         var $footer = $('<tr/>');
                         var $footerTD = $('<td/>').attr('colspan', 4).addClass('footerContent');
+                        var $nav = $('<nav/>').attr('aria-label', 'Pagination');
+                        var $ul = $('<ul/>').addClass('pagination');
 
                         if (totalPage > 0) {
-                            for (var i = 1; i <= totalPage; i++) {
-                                var $page = $('<span/>').addClass((i == currentPage) ? "current" : "");
-                                $page.html((i == currentPage) ? i : "<a href='#'>" + i + "</a>");
-                                $footerTD.append($page);
+                            var $page = $('<li/>');
+                            if (pageNo == 1) {
+                                $page.addClass("page-item disabled");
+                                $page.html('<span class="page-link">Previous</span>')
                             }
+                            else {
+                                $page.addClass("page-item");
+                                $page.html('<a class="page-link" href="#">Previous</a>')
+                            }
+                            $ul.append($page);
+
+                            for (var i = 1; i <= totalPage; i++) {
+                                var $page = $('<li/>').html('<a class="page-link" href="#">' + i + '</a>');
+                                if (pageNo == i)
+                                    $page.addClass("page-item active");
+                                else
+                                    $page.addClass("page-item");
+                                $ul.append($page);
+                            }
+
+                            $page = $('<li/>');
+                            if (pageNo == totalPage) {
+                                $page.addClass("page-item disabled");
+                                $page.html('<span class="page-link">Next</span>')
+                            }
+                            else {
+                                $page.addClass("page-item");
+                                $page.html('<a class="page-link" href="#">Next</a>')
+                            }
+                            $ul.append($page);
+
+                            $nav.append($ul);
+                            $footerTD.append($nav);
                             $footer.append($footerTD);
                         }
 
