@@ -1,0 +1,61 @@
+﻿@model JobOffer
+
+<div class="row row-box">
+    <h1><span data-bind="text: jobTitle">@Model.JobTitle</span></h1>
+    <div class="col-md-8">
+        <div class="offer-description" id="previewMarkdown">
+            <span data-bind="text: description">@Html.DisplayFor(m => m.Description)</span>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="offer-details">
+            <div class="form-group">
+                <div>
+                    <label asp-for="Company">Company:</label>
+                    @Html.DisplayFor(m => m.Company.Name)
+                </div>
+                <div>
+                    <label asp-for="Location">Location:</label>
+                    @Html.DisplayFor(m => m.Location)
+                </div>
+                @if (Model.SalaryFrom.HasValue)
+                {
+                    <div>
+                        <label asp-for="SalaryFrom">Salary from:</label>
+                        @Html.DisplayFor(m => m.SalaryFrom) (PLN)
+                    </div>
+                }
+                @if (Model.SalaryTo.HasValue)
+                {
+                    <div>
+                        <label asp-for="SalaryTo">Salary to:</label>
+                        @Html.DisplayFor(m => m.SalaryTo) (PLN)
+                    </div>
+                }
+                <div>
+                    <label asp-for="Created">Created:</label>
+                    @Html.DisplayFor(m => m.Created)
+                </div>
+                @if (Model.ValidUntil.HasValue)
+                {
+                    <div>
+                        <label>Valid:</label>
+                        <span>@Model.ValidUntil.Value.Subtract(DateTime.Now).Days days (@Model.ValidUntil)</span>
+                    </div>
+                }
+            </div>
+
+            <form asp-action="Add" asp-controller="JobApplication" method="get">
+                <div class="form-group">
+                    <input asp-for="Id" type="hidden" />
+                    <button type="submit" class="btn btn-success">Apply Now</button>
+                </div>
+            </form>
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+            <form asp-action="Delete" style="display:inline">
+                <input asp-for="Id" type="hidden" />
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+        </div>
+    </div>
+</div>

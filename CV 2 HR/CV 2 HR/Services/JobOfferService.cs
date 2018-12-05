@@ -38,13 +38,16 @@ namespace CV_2_HR.Services
         public async Task<JobOffer> GetOfferAsync(int id)
         {
             return await _context.JobOffers
-                .FirstOrDefaultAsync(offer => offer.Id == id);
+                .Where(offer => offer.Id == id)
+                .Include(offer => offer.Company)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<JobOffer> GetOfferWithApplicationsAsync(int id)
         {
             return await _context.JobOffers
                 .Where(offer => offer.Id == id)
+                .Include(offer => offer.Company)
                 .Include(offer => offer.JobApplications)
                 .FirstOrDefaultAsync();
         }

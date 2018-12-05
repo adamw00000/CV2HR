@@ -42,7 +42,7 @@ namespace CV_2_HR.Controllers
 
         public async Task<IActionResult> Details(int id)
         {
-            var offer = await _offerService.GetOfferWithApplicationsAsync(id);
+            var offer = await _offerService.GetOfferAsync(id);
 
             return View(offer);
         }

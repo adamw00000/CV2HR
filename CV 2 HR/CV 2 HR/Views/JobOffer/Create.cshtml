@@ -8,11 +8,11 @@
     <div class="col-md-12">
         <h2>Create new job offer:</h2>
 
-        <form asp-action="Create" id="createForm">
+        <form asp-action="Create" method="post" id="createForm">
             <div asp-validation-summary="ModelOnly" class="text-danger" />
             <div class="form-group">
                 <label asp-for="JobTitle" class="control-label"></label>
-                <input asp-for="JobTitle" class="form-control" required/>
+                <input asp-for="JobTitle" class="form-control" required />
                 <span asp-validation-for="JobTitle" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -31,7 +31,7 @@
                 <label asp-for="SalaryFrom" class="control-label">Salary</label>
                 <div class="input-group">
                     <span class="input-group-addon">PLN</span>
-                    <input asp-for="SalaryFrom" class="form-control" placeholder="From" min="0"/>
+                    <input asp-for="SalaryFrom" id="salaryFrom" class="form-control" placeholder="From" min="0"/>
                 </div>
                 <span asp-validation-for="SalaryFrom" class="text-danger"></span>
             </div>
@@ -39,14 +39,14 @@
                 <label asp-for="SalaryTo" class="control-label">Salary</label>
                 <div class="input-group">
                     <span class="input-group-addon">PLN</span>
-                    <input asp-for="SalaryTo" class="form-control" placeholder="To" min="0"/>
+                    <input asp-for="SalaryTo" id="salaryTo" class="form-control" placeholder="To" min="0"/>
                 </div>
                 <span asp-validation-for="SalaryTo" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ValidUntil" class="control-label"></label>
                 <div class="input-group">
-                    <input asp-for="ValidUntil" class="form-control" type="date" date/>
+                    <input asp-for="ValidUntil" class="form-control" type="date" date />
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
@@ -55,19 +55,31 @@
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
-                <textarea asp-for="Description" class="form-control" placeholder="Enter description (min. 100 characters)" required minlength="100"></textarea>
+                <textarea asp-for="Description" class="form-control"
+                          placeholder="Enter description (min. 100 characters)" required minlength="100"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-primary">Create</button>
             </div>
         </form>
-
     </div>
 </div>
 
 @section Scripts {
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
     <script>
-        $("#createForm").validate();	
+        $("#createForm").validate({
+            rules: {
+                salaryFrom: {
+                    min: 0
+                },
+                salaryTo: {
+                    min: 0
+                }
+            }
+        });
     </script>
 }

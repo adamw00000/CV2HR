@@ -4,66 +4,12 @@
     ViewData["Title"] = "Offer details";
 }
 
+<partial for="@Model" name="_JobOfferDetailsPartial" />
+
 <div class="row row-box">
-    <h1>@Model.JobTitle</h1>
-    <div class="col-md-8">
-        <div class="offer-description" id="previewMarkdown">
-            @Html.DisplayFor(m => m.Description)
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="offer-details">
-            <div class="form-group">
-                <div>
-                    <label asp-for="Company">Company:</label>
-                    @Html.DisplayFor(m => m.Company.Name)
-                </div>
-                <div>
-                    <label asp-for="Location">Location:</label>
-                    @Html.DisplayFor(m => m.Location)
-                </div>
-                @if (Model.SalaryFrom.HasValue)
-                {
-                    <div>
-                        <label asp-for="SalaryFrom">Salary from:</label>
-                        @Html.DisplayFor(m => m.SalaryFrom) (PLN)
-                    </div>
-                }
-                @if (Model.SalaryTo.HasValue)
-                {
-                    <div>
-                        <label asp-for="SalaryTo">Salary to:</label>
-                        @Html.DisplayFor(m => m.SalaryTo) (PLN)
-                    </div>
-                }
-                <div>
-                    <label asp-for="Created">Created:</label>
-                    @Html.DisplayFor(m => m.Created)
-                </div>
-                @if (Model.ValidUntil.HasValue)
-                {
-                    <div>
-                        <label>Valid:</label>
-                        <span>@Model.ValidUntil.Value.Subtract(DateTime.Now).Days days (@Model.ValidUntil)</span>
-                    </div>
-                }
-            </div>
-            <form asp-action="Add" asp-controller="JobApplication" method="get">
-                <div class="form-group">
-                    <input asp-for="Id" type="hidden" />
-                    <button type="submit" class="btn btn-success">Apply Now</button>
-                </div>
-            </form>
-            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
-            <form asp-action="Delete" style="display:inline">
-                <input asp-for="Id" type="hidden" />
-                <button type="submit" class="btn btn-danger">Delete</button>
-            </form>
-        </div>
-    </div>
-</div><div class="row row-box">
     <a asp-action="Index" class="btn btn-primary">Back to offers list</a>
 </div>
+
 <div class="row row-box">
     <div class="col-md-12">
         <h2>Applications</h2>
@@ -77,15 +23,15 @@
             </thead>
             <tbody id="applications">
                 @*@foreach (var application in Model.JobApplications)
-                {
-                    <tr>
-                        <td>
-                            <a asp-action="Details" asp-controller="JobApplication" asp-route-id="@application.Id">@application.FirstName @application.LastName</a>
-                        </td>
-                        <td>@application.EmailAddress</td>
-                        <td>@application.PhoneNumber</td>
-                    </tr>
-                }*@
+                    {
+                        <tr>
+                            <td>
+                                <a asp-action="Details" asp-controller="JobApplication" asp-route-id="@application.Id">@application.FirstName @application.LastName</a>
+                            </td>
+                            <td>@application.EmailAddress</td>
+                            <td>@application.PhoneNumber</td>
+                        </tr>
+                    }*@
             </tbody>
         </table>
     </div>
