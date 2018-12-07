@@ -5,11 +5,24 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using CV_2_HR.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Configuration;
+using CommunityCertForT;
+using CommunityCertForT.Helpers;
 
 namespace CV_2_HR.Controllers
 {
     public class HomeController : Controller
     {
+        private IConfiguration _configuration;
+        private AppSettings AppSettings { get; set; }
+
+        public HomeController(IConfiguration Configuration)
+        {
+            _configuration = Configuration;
+            AppSettings = _configuration.GetSection("AppSettings").Get<AppSettings>();
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -22,9 +35,15 @@ namespace CV_2_HR.Controllers
             return View();
         }
 
-        public IActionResult Contact()
+        [Authorize]
+        public async Task<IActionResult> Contact()
         {
             ViewData["Message"] = "Your contact page.";
+
+            AADGraph graph = new AADGraph(AppSettings);
+            string groupName = "Admin";
+            string groupId = AppSettings.AADGroups.FirstOrDefault(g => String.Compare(g.Name, groupName) == 0).Id;
+            bool isIngroup = await graph.IsUserInGroup(User.Claims, groupId);
 
             return View();
         }
