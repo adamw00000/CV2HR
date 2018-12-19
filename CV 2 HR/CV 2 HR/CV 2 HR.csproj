@@ -3,10 +3,11 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <RootNamespace>CV_2_HR</RootNamespace>
+    <UserSecretsId>b8975a67-40fe-47ba-87ed-674729288027</UserSecretsId>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>C:\Users\adamw\Source\Repos\CV 2 HR\CV 2 HR\CV 2 HR\CV 2 HR.xml</DocumentationFile>
+    <DocumentationFile>C:\Users\Adam\Source\Repos\CV 2 HR\CV 2 HR\CV 2 HR\CV 2 HR.xml</DocumentationFile>
     <NoWarn>1701;1702; 1591</NoWarn>
   </PropertyGroup>
 

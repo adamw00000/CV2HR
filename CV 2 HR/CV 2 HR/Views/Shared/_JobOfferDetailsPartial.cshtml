@@ -1,10 +1,12 @@
 ﻿@model JobOffer
 
 <div class="row row-box">
-    <h1><span data-bind="text: jobTitle">@Model.JobTitle</span></h1>
+    <h1>
+        <span>@Model.JobTitle</span>
+    </h1>
     <div class="col-md-8">
         <div class="offer-description" id="previewMarkdown">
-            <span data-bind="text: description">@Html.DisplayFor(m => m.Description)</span>
+            <span>@Html.DisplayFor(m => m.Description)</span>
         </div>
     </div>
     <div class="col-md-4">
@@ -32,10 +34,13 @@
                         @Html.DisplayFor(m => m.SalaryTo) (PLN)
                     </div>
                 }
+                @if (Model.Created != DateTime.MinValue)
+                {
                 <div>
                     <label asp-for="Created">Created:</label>
                     @Html.DisplayFor(m => m.Created)
                 </div>
+                }
                 @if (Model.ValidUntil.HasValue)
                 {
                     <div>

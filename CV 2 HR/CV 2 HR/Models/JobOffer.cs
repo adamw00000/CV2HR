@@ -15,8 +15,9 @@ namespace CV_2_HR.Models
         public string JobTitle { get; set; }
 
         public virtual Company Company { get; set; }
+        [Required(ErrorMessage = "The Company field is required.")]
         public int CompanyId { get; set; }
-
+        
         [Display(Name = "Salary from")]
         public decimal? SalaryFrom { get; set; }
         
@@ -24,6 +25,8 @@ namespace CV_2_HR.Models
         public decimal? SalaryTo { get; set; }
 
         public DateTime Created { get; set; }
+
+        [Required]
         public string Location { get; set; }
 
         [Required]

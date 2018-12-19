@@ -4,73 +4,176 @@
     ViewData["Title"] = "Create offer";
 }
 
-<div class="row row-box">
-    <div class="col-md-12">
-        <h2>Create new job offer:</h2>
+<div id="vuePage">
+    <div class="row row-box">
+        <div class="col-md-12">
+            <h2>Create new job offer:</h2>
 
-        <form asp-action="Create" method="post" id="createForm">
-            <div asp-validation-summary="ModelOnly" class="text-danger" />
-            <div class="form-group">
-                <label asp-for="JobTitle" class="control-label"></label>
-                <input asp-for="JobTitle" class="form-control" required />
-                <span asp-validation-for="JobTitle" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Company" class="control-label"></label>
-                <select asp-for="CompanyId" asp-items="@(new SelectList(Model.Companies, "Id", "Name"))" class="form-control" required>
-                    <option disabled selected hidden value="">Select a company...</option>
-                </select>
-                <span asp-validation-for="CompanyId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Location" class="control-label"></label>
-                <input asp-for="Location" class="form-control" />
-                <span asp-validation-for="Location" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SalaryFrom" class="control-label">Salary</label>
-                <div class="input-group">
-                    <span class="input-group-addon">PLN</span>
-                    <input asp-for="SalaryFrom" id="salaryFrom" class="form-control" placeholder="From" min="0"/>
+            <form asp-action="Create" method="post" id="createForm">
+                <div asp-validation-summary="ModelOnly" class="text-danger" />
+                <div class="form-group">
+                    <label asp-for="JobTitle" class="control-label"></label>
+                    <input asp-for="JobTitle" v-model="jobTitle" class="form-control" required />
+                    <span asp-validation-for="JobTitle" class="text-danger"></span>
                 </div>
-                <span asp-validation-for="SalaryFrom" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SalaryTo" class="control-label">Salary</label>
-                <div class="input-group">
-                    <span class="input-group-addon">PLN</span>
-                    <input asp-for="SalaryTo" id="salaryTo" class="form-control" placeholder="To" min="0"/>
+                <div class="form-group">
+                    <label asp-for="Company" class="control-label"></label>
+                    <select asp-for="CompanyId" v-model="companyIndex" asp-items="@(new SelectList(Model.Companies, "Id", "Name"))"
+                            class="form-control" id="companySelect" required>
+                        <option disabled selected hidden value="">Select a company...</option>
+                    </select>
+                    <span asp-validation-for="CompanyId" class="text-danger"></span>
                 </div>
-                <span asp-validation-for="SalaryTo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ValidUntil" class="control-label"></label>
-                <div class="input-group">
-                    <input asp-for="ValidUntil" class="form-control" type="date" date />
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
+                <div class="form-group">
+                    <label asp-for="Location" class="control-label"></label>
+                    <input asp-for="Location" v-model="location" class="form-control" required />
+                    <span asp-validation-for="Location" class="text-danger"></span>
                 </div>
-                <span asp-validation-for="ValidUntil" class="text-danger"></span>
+                <div class="form-group">
+                    <label asp-for="SalaryFrom" class="control-label">Salary</label>
+                    <div class="input-group">
+                        <span class="input-group-addon">PLN</span>
+                        <input asp-for="SalaryFrom" v-model="salaryFrom" id="salaryFrom" class="form-control" placeholder="From" min="0" />
+                    </div>
+                    <span asp-validation-for="SalaryFrom" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="SalaryTo" class="control-label">Salary</label>
+                    <div class="input-group">
+                        <span class="input-group-addon">PLN</span>
+                        <input asp-for="SalaryTo" v-model="salaryTo" id="salaryTo" class="form-control" placeholder="To" min="0" />
+                    </div>
+                    <span asp-validation-for="SalaryTo" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ValidUntil" class="control-label"></label>
+                    <div class="input-group">
+                        <input asp-for="ValidUntil" v-model="validUntil" class="form-control" type="date" date />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                    <span asp-validation-for="ValidUntil" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <textarea asp-for="Description" v-model="description" class="form-control"
+                              placeholder="Enter description (min. 100 characters)" required minlength="100"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <h1 class="display-1 text-center text-info">Offer preview below</h1>
+    <div class="row row-box">
+        <h1>
+            <span>{{ jobTitle }}</span>
+        </h1>
+        <div class="col-md-8">
+            <div class="offer-description" id="previewMarkdown">
+                <span>{{ description }}</span>
             </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <textarea asp-for="Description" class="form-control"
-                          placeholder="Enter description (min. 100 characters)" required minlength="100"></textarea>
-                <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <div class="col-md-4">
+            <div class="offer-details">
+                <div class="form-group">
+                    <div>
+                        <label asp-for="Company">Company:</label>
+                        <span>{{ company }}</span>
+                    </div>
+                    <div>
+                        <label asp-for="Location">Location:</label>
+                        <span>{{ location }}</span>
+                    </div>
+                    <div v-if="salaryFrom">
+                        <label asp-for="SalaryFrom">Salary from:</label>
+                        <span>{{ salaryFrom }} (PLN)</span>
+                    </div>
+                    <div v-if="salaryTo">
+                        <label asp-for="SalaryTo">Salary to:</label>
+                        <span>{{ salaryTo }} (PLN)</span>
+                    </div>
+                    <div>
+                        <label asp-for="Created">Created:</label>
+                        <span>{{ createdPretty }}</span>
+                    </div>
+                    <div v-if="validUntil">
+                        <label>Valid:</label>
+                        <span>{{ validUntilPretty }}</span>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary">Create</button>
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
 @section Scripts {
-    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.js"></script>
     <script>
+        var vm = new Vue({
+            el: '#vuePage',
+            data: {
+                jobTitle: "",
+                companyIndex: "",
+                location: "",
+                salaryFrom: null,
+                salaryTo: null,
+                validUntil: "",
+                description: "",
+                created: moment()
+            },
+            computed: {
+                company() {
+                    if (this.companyIndex === "")
+                        return "";
+                    return $('#companySelect option[value=' + this.companyIndex + ']').text();
+                },
+                createdPretty() {
+                    return this.created.format("YYYY-MM-DD HH:mm:ss");
+                },
+                validUntilPretty() {
+                    if (!this.validUntil)
+                        return null;
+                    var now = moment(this.validUntil);
+                    var then = moment();
+
+                    var ms = moment(now, "DD/MM/YYYY HH:mm:ss").diff(moment(then, "DD/MM/YYYY HH:mm:ss"));
+                    var d = moment.duration(ms);
+                    var s = Math.floor(d.asDays());
+                    return s + ' days (' + now.format("YYYY-MM-DD HH:mm:ss") + ')';
+                }
+            },
+            created: function () {
+                var self = this;
+                setInterval(function () {
+                    self.created = moment()
+                }, 1000);
+            },
+            mounted: function () {
+                this.jobTitle = '@Model.JobTitle';
+                if ('@Model.CompanyId' != 0)
+                    this.companyIndex = '@Model.CompanyId';
+                this.location = '@Model.Location';
+                this.salaryFrom = '@(Model.SalaryFrom == null ? null : Model.SalaryFrom)';
+                this.salaryTo = '@(Model.SalaryTo == null ? null : Model.SalaryTo)';
+                this.validUntil = '@Model.ValidUntil' === '' ? '' : moment(@Model.ValidUntil);
+                this.description = '@Model.Description';
+            }
+        });
+
+    </script>
+
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
+    @*<script>
         $("#createForm").validate({
             rules: {
                 salaryFrom: {
@@ -81,5 +184,5 @@
                 }
             }
         });
-    </script>
+    </script>*@
 }
