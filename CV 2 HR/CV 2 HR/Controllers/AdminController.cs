@@ -4,10 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using CV_2_HR.Models;
 using CV_2_HR.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CV_2_HR.Controllers
 {
+    [Authorize(Policy = "Admin")]
     public class AdminController : Controller
     {
         private readonly ICompanyService _companyService;

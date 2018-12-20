@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CV_2_HR.Models;
 using CV_2_HR.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CV_2_HR.Controllers
@@ -47,6 +48,7 @@ namespace CV_2_HR.Controllers
             return View(offer);
         }
 
+        [Authorize(Policy = "Manager")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -62,6 +64,7 @@ namespace CV_2_HR.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "Manager")]
         public async Task<IActionResult> Edit(JobOffer newOffer)
         {
             if (!ModelState.IsValid)
@@ -77,6 +80,7 @@ namespace CV_2_HR.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "Manager")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -95,6 +99,7 @@ namespace CV_2_HR.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Policy = "Manager")]
         public async Task<IActionResult> Create()
         {
             var companies = await _companyService.GetCompaniesAsync();
@@ -106,6 +111,7 @@ namespace CV_2_HR.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "Manager")]
         public async Task<IActionResult> Create(JobOfferCreateViewModel model)
         {
             if (!ModelState.IsValid)

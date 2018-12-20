@@ -9,6 +9,7 @@ using CV_2_HR.EF_Core;
 using CV_2_HR.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -48,7 +49,20 @@ namespace CV_2_HR
                 OpenIdConnectDefaults.AuthenticationScheme;
             })
             .AddAzureAdB2C(options => Configuration.Bind("Authentication:AzureAdB2C", options))
-            .AddCookie();
+            .AddCookie(options =>
+            {
+                options.AccessDeniedPath = "/Session/Denied";
+            });
+            
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Admin", policy =>
+                    policy.Requirements.Add(new RoleRequirement(new List<string> { "Admin" })));
+                options.AddPolicy("Manager", policy =>
+                    policy.Requirements.Add(new RoleRequirement(new List<string> { "Admin", "Manager" })));
+            });
+
+            services.AddSingleton<IAuthorizationHandler, RoleRequirementHandler>();
 
             services.AddMemoryCache();
             services.AddDistributedMemoryCache();

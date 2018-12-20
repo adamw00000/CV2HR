@@ -67,5 +67,11 @@ namespace CommunityCertForT.Controllers
 
             return View();
         }
+
+        [HttpGet]
+        public IActionResult Denied()
+        {
+            return View();
+        }
     }
 }

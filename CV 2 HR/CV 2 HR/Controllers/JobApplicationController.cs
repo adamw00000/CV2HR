@@ -4,10 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using CV_2_HR.Models;
 using CV_2_HR.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CV_2_HR.Controllers
 {
+    [Authorize]
     public class JobApplicationController : Controller
     {
         private IJobApplicationService _applicationService;
@@ -18,7 +20,7 @@ namespace CV_2_HR.Controllers
             _applicationService = applicationService;
             _offerService = offerService;
         }
-
+        
         public async Task<IActionResult> Add(int id)
         {
             var jobApplication = new JobApplication { OfferId = id };
@@ -46,7 +48,7 @@ namespace CV_2_HR.Controllers
 
             return RedirectToAction("Details", "JobOffer", new { Id = jobApplication.OfferId });
         }
-
+        
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)

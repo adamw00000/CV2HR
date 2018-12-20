@@ -35,15 +35,9 @@ namespace CV_2_HR.Controllers
             return View();
         }
 
-        [Authorize]
-        public async Task<IActionResult> Contact()
+        public IActionResult Contact()
         {
             ViewData["Message"] = "Your contact page.";
-
-            AADGraph graph = new AADGraph(AppSettings);
-            string groupName = "Admin";
-            string groupId = AppSettings.AADGroups.FirstOrDefault(g => String.Compare(g.Name, groupName) == 0).Id;
-            bool isIngroup = await graph.IsUserInGroup(User.Claims, groupId);
 
             return View();
         }

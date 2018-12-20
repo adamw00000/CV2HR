@@ -1,4 +1,10 @@
 ﻿@model JobOffer
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+
+@{
+    var authorizationResult = AuthorizationService.AuthorizeAsync(User, "Manager");
+}
 
 <div class="row row-box">
     <h1>
@@ -36,10 +42,10 @@
                 }
                 @if (Model.Created != DateTime.MinValue)
                 {
-                <div>
-                    <label asp-for="Created">Created:</label>
-                    @Html.DisplayFor(m => m.Created)
-                </div>
+                    <div>
+                        <label asp-for="Created">Created:</label>
+                        @Html.DisplayFor(m => m.Created)
+                    </div>
                 }
                 @if (Model.ValidUntil.HasValue)
                 {
@@ -56,11 +62,14 @@
                     <button type="submit" class="btn btn-success">Apply Now</button>
                 </div>
             </form>
-            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
-            <form asp-action="Delete" style="display:inline">
-                <input asp-for="Id" type="hidden" />
-                <button type="submit" class="btn btn-danger">Delete</button>
-            </form>
+            @if ((await authorizationResult).Succeeded)
+            {
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+                <form asp-action="Delete" style="display:inline">
+                    <input asp-for="Id" type="hidden" />
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            }
         </div>
     </div>
 </div>
