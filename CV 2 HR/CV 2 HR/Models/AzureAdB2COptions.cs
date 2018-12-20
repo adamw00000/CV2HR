@@ -23,6 +23,7 @@ namespace CommunityCertForT.Models
         public string ResetPasswordPolicyId { get; set; }
         public string EditProfilePolicyId { get; set; }
         public string RedirectUri { get; set; }
+        public string ProductionRedirectUri { get; set; }
 
         public string DefaultPolicy => SignUpSignInPolicyId;
         public string Authority => $"{AzureAdB2CInstance}/{Tenant}/{DefaultPolicy}/v2.0";

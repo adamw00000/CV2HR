@@ -122,7 +122,14 @@ namespace CommunityCertForT
                 }
                 
                 TokenCache userTokenCache = new MSALSessionCache(signedInUserID, context.HttpContext).GetMsalCacheInstance();
-                ConfidentialClientApplication cca = new ConfidentialClientApplication(AzureAdB2COptions.ClientId, AzureAdB2COptions.Authority, AzureAdB2COptions.RedirectUri, new ClientCredential(AzureAdB2COptions.ClientSecret), userTokenCache, null);
+
+                string redirectUri;
+                if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
+                    redirectUri = AzureAdB2COptions.ProductionRedirectUri;
+                else
+                    redirectUri = AzureAdB2COptions.RedirectUri;
+
+                ConfidentialClientApplication cca = new ConfidentialClientApplication(AzureAdB2COptions.ClientId, AzureAdB2COptions.Authority, redirectUri, new ClientCredential(AzureAdB2COptions.ClientSecret), userTokenCache, null);
                 try
                 {
                     AuthenticationResult result = await cca.AcquireTokenByAuthorizationCodeAsync(code, AzureAdB2COptions.ApiScopes.Split(' '));

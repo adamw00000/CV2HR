@@ -17,9 +17,9 @@
             <tbody>
                 @foreach (var company in Model)
                 {
-                    <tr valign="middle">
+                    <tr>
                         <td>
-                            @company.Name
+                            <span>@company.Name</span>
                         </td>
                         <td>
                             <a asp-action="RemoveCompany" asp-route-id="@company.Id" class="btn btn-danger">Remove</a>
