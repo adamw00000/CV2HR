@@ -12,7 +12,7 @@ namespace CV_2_HR.Services
         Task<IEnumerable<JobOffer>> GetJobOffersAsync();
         Task<JobOffer> GetOfferAsync(int id);
         Task<JobOffer> GetOfferWithApplicationsAsync(int id);
-        Task<bool> ModifyOffer(JobOffer newOffer);
+        Task<bool> UpdateOffer(JobOffer newOffer);
         Task<bool> RemoveOffer(JobOffer newOffer);
         Task<JobOfferPage> GetJobOffersSearchResultPageAsync(string searchstring, int pageNo);
         Task<JobOfferPage> GetJobOffersPageAsync(int pageNo);

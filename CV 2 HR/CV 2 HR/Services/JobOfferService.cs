@@ -52,7 +52,7 @@ namespace CV_2_HR.Services
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<bool> ModifyOffer(JobOffer newOffer)
+        public async Task<bool> UpdateOffer(JobOffer newOffer)
         {
             var oldOffer = await GetOfferAsync(newOffer.Id);
 
@@ -60,9 +60,10 @@ namespace CV_2_HR.Services
             oldOffer.Description = newOffer.Description;
             oldOffer.SalaryFrom = newOffer.SalaryFrom;
             oldOffer.SalaryTo = newOffer.SalaryTo;
+            oldOffer.ValidUntil = newOffer.ValidUntil;
 
             var modified = await _context.SaveChangesAsync();
-            return modified == 1;
+            return modified <= 1;
         }
 
         public async Task<bool> RemoveOffer(JobOffer newOffer)

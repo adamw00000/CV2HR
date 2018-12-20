@@ -7,35 +7,41 @@
 <div class="row">
     <div class="col-sm-12">
         <h2>Edit job offer</h2>
-        @using (Html.BeginForm("Create"))
-        {
-            @Html.AntiForgeryToken()
-            @Html.HiddenFor(m => m.Id)
+        <form asp-action="Edit" method="post">
+            <input asp-for="Id" hidden />
+            <input asp-for="Location" hidden />
+            <input asp-for="CompanyId" hidden />
             <div class="form-group">
-                @Html.LabelFor(m => m.JobTitle)
-                @Html.EditorFor(m => m.JobTitle, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(m => m.JobTitle, "", new { @class = "text-danger" })
+                <label asp-for="JobTitle"></label>
+                <input asp-for="JobTitle" class="form-control" />
+                <span asp-validation-for="JobTitle" class="text-danger" required></span>
             </div>
             <div class="form-group">
-                @Html.LabelFor(m => m.Description)
-                @Html.EditorFor(m => m.Description,
-                        new { htmlAttributes = new { @class = "form-control", placeholder = "Enter description" } })
-                @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+                <label asp-for="SalaryFrom"></label>
+                <input asp-for="SalaryFrom" class="form-control" />
+                <span asp-validation-for="SalaryFrom" class="text-danger"></span>
             </div>
             <div class="form-group">
-                @Html.LabelFor(m => m.SalaryFrom)
-                @Html.EditorFor(m => m.SalaryFrom,
-                        new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(m => m.SalaryFrom, "", new { @class = "text-danger" })
+                <label asp-for="SalaryTo"></label>
+                <input asp-for="SalaryTo" class="form-control" />
+                <span asp-validation-for="SalaryTo" class="text-danger"></span>
             </div>
             <div class="form-group">
-                @Html.LabelFor(m => m.SalaryTo)
-                @Html.EditorFor(m => m.SalaryTo,
-                        new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(m => m.SalaryTo, "", new { @class = "text-danger" })
+                <label asp-for="ValidUntil" class="control-label"></label>
+                <div class="input-group">
+                    <input asp-for="ValidUntil" v-model="validUntil" class="form-control" type="date" date />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+                <span asp-validation-for="ValidUntil" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description"></label>
+                <textarea asp-for="Description" class="form-control" required></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <button type="submit" class="btn btn-primary">Save</button>
-        }
+        </form>
     </div>
 </div>
-

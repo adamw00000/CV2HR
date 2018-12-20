@@ -65,9 +65,9 @@ namespace CV_2_HR.Controllers
         public async Task<IActionResult> Edit(JobOffer newOffer)
         {
             if (!ModelState.IsValid)
-                return View();
+                return View(newOffer);
             
-            bool succeeded = await _offerService.ModifyOffer(newOffer);
+            bool succeeded = await _offerService.UpdateOffer(newOffer);
 
             if (!succeeded)
                 return StatusCode(500);
