@@ -28,7 +28,7 @@ namespace CommunityCertForT.Helpers
 
         }
         public async Task<bool> IsUserInGroup(IEnumerable<Claim> userClaims, string groupId)
-        {         
+        {
             AuthenticationResult token = await authContext.AcquireTokenAsync(AAD_GRAPH_URI, clientCredential);
                         
             var ID_CLAIM_NAME = _appSetings.UserIdClaimName;

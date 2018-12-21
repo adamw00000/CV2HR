@@ -40,11 +40,19 @@ namespace CV_2_HR
             {
                 string groupName = role;
                 string groupId = AppSettings.AADGroups.FirstOrDefault(g => String.Compare(g.Name, groupName) == 0).Id;
-                bool isIngroup = await graph.IsUserInGroup(context.User.Claims, groupId);
-
-                if (isIngroup)
+                try
                 {
-                    context.Succeed(requirement);
+                    bool isIngroup = await graph.IsUserInGroup(context.User.Claims, groupId);
+
+                    if (isIngroup)
+                    {
+                        context.Succeed(requirement);
+                        return;
+                    }
+                }
+                catch
+                {
+                    context.Fail();
                     return;
                 }
             }
