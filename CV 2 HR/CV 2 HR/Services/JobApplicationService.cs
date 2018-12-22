@@ -28,6 +28,7 @@ namespace CV_2_HR.Services
         public async Task<JobApplication> GetJobApplicationAsync(int id)
         {
             return await _context.JobApplications
+                .Include(application => application.Offer)
                 .FirstOrDefaultAsync(application => application.Id == id);
         }
 

@@ -37,9 +37,9 @@ namespace CV_2_HR.Models
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyy-MM-dd}")]
         [Display(Name = "Valid until")]
         public DateTime? ValidUntil { get; set; }
-        
-        //[Required]
-        //public int UserId { get; set; }
+
+        [Required]
+        public string UserId { get; set; }
 
         public virtual ICollection<JobApplication> JobApplications { get; set; }
 

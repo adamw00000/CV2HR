@@ -35,8 +35,8 @@ namespace CV_2_HR.Models
         
         public string CvFileName { get; set; }
 
-        //[Required]
-        //public int UserId { get; set; }
+        [Required]
+        public string UserId { get; set; }
 
         public virtual JobOffer Offer { get; set; }
 

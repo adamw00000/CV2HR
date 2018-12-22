@@ -114,6 +114,11 @@ namespace CV_2_HR.Controllers
         [Authorize(Policy = "Manager")]
         public async Task<IActionResult> Create(JobOfferCreateViewModel model)
         {
+            var userId = HttpContext.User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
+            model.UserId = userId;
+
+            ModelState.Clear();
+            var result = TryValidateModel(model);
             if (!ModelState.IsValid)
             {
                 var companies = await _companyService.GetCompaniesAsync();

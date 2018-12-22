@@ -15,12 +15,15 @@ namespace CV_2_HR.Controllers
         private readonly IJobApplicationService _applicationService;
         private readonly IJobOfferService _offerService;
         private readonly IBlobService _blobService;
+        private readonly IAuthorizationService _authorizationService;
 
-        public JobApplicationController(IJobApplicationService applicationService, IJobOfferService offerService, IBlobService blobService)
+        public JobApplicationController(IJobApplicationService applicationService, IJobOfferService offerService, 
+            IBlobService blobService, IAuthorizationService authorizationService)
         {
             _applicationService = applicationService;
             _offerService = offerService;
             _blobService = blobService;
+            _authorizationService = authorizationService;
         }
         
         public async Task<IActionResult> Add(int id)
@@ -36,6 +39,11 @@ namespace CV_2_HR.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(JobApplicationCreateViewModel viewModel)
         {
+            var userId = HttpContext.User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
+            viewModel.UserId = userId;
+
+            ModelState.Clear();
+            var result = TryValidateModel(viewModel);
             if (!ModelState.IsValid)
             {
                 var offer = await _offerService.GetOfferAsync(viewModel.OfferId);
@@ -76,7 +84,18 @@ namespace CV_2_HR.Controllers
 
             var application = await _applicationService.GetJobApplicationAsync(id.Value);
 
-            return View(application);
+            var userId = HttpContext.User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
+
+            if (userId == application.UserId)
+                return View(application);
+
+            var managerAuthorizationResult = _authorizationService.AuthorizeAsync(User, "Manager");
+            var adminAuthorizationResult = _authorizationService.AuthorizeAsync(User, "Admin");
+            if ((await adminAuthorizationResult).Succeeded || 
+                ((await managerAuthorizationResult).Succeeded && application.Offer.UserId == userId))
+                return View(application);
+
+            return RedirectToAction("Denied", "Session");
         }
     }
 }
