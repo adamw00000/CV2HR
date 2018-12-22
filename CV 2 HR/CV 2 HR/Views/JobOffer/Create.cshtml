@@ -69,7 +69,7 @@
     </div>
 
     <h1 class="display-1 text-center text-info">Offer preview below</h1>
-    <div class="row row-box">
+    <div class="row row-box" v-cloak>
         <h1>
             <span>{{ jobTitle }}</span>
         </h1>
@@ -174,15 +174,21 @@
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
     @*<script>
-        $("#createForm").validate({
-            rules: {
-                salaryFrom: {
-                    min: 0
-                },
-                salaryTo: {
-                    min: 0
+            $("#createForm").validate({
+                rules: {
+                    salaryFrom: {
+                        min: 0
+                    },
+                    salaryTo: {
+                        min: 0
+                    }
                 }
-            }
-        });
-    </script>*@
+            });
+        </script>*@
 }
+
+<style>
+    [v-cloak] {
+        display: none;
+    }
+</style>

@@ -89,6 +89,7 @@ namespace CV_2_HR
             services.AddScoped<ICompanyService, CompanyService>();
             services.AddScoped<IJobOfferService, JobOfferService>();
             services.AddScoped<IJobApplicationService, JobApplicationService>();
+            services.AddScoped<IBlobService, BlobService>();
 
             //services.AddSwaggerGen(c =>
             //{

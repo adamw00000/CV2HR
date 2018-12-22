@@ -12,36 +12,56 @@ namespace CV_2_HR.Controllers
     [Authorize]
     public class JobApplicationController : Controller
     {
-        private IJobApplicationService _applicationService;
-        private IJobOfferService _offerService;
+        private readonly IJobApplicationService _applicationService;
+        private readonly IJobOfferService _offerService;
+        private readonly IBlobService _blobService;
 
-        public JobApplicationController(IJobApplicationService applicationService, IJobOfferService offerService)
+        public JobApplicationController(IJobApplicationService applicationService, IJobOfferService offerService, IBlobService blobService)
         {
             _applicationService = applicationService;
             _offerService = offerService;
+            _blobService = blobService;
         }
         
         public async Task<IActionResult> Add(int id)
         {
-            var jobApplication = new JobApplication { OfferId = id };
+            var viewModel = new JobApplicationCreateViewModel { OfferId = id };
 
             var offer = await _offerService.GetOfferAsync(id);
-            jobApplication.Offer = offer;
-            return View(jobApplication);
+            viewModel.Offer = offer;
+            return View(viewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add(JobApplication jobApplication)
+        public async Task<IActionResult> Add(JobApplicationCreateViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
-                var offer = await _offerService.GetOfferAsync(jobApplication.OfferId);
-                jobApplication.Offer = offer;
-                return View(jobApplication);
+                var offer = await _offerService.GetOfferAsync(viewModel.OfferId);
+                viewModel.Offer = offer;
+                return View(viewModel);
             }
 
-            bool succeeded = await _applicationService.AddJobApplicationAsync(jobApplication);
+            _blobService.ValidateFile(viewModel.CvFile, ModelState);
+
+            if (!ModelState.IsValid)
+            {
+                var offer = await _offerService.GetOfferAsync(viewModel.OfferId);
+                viewModel.Offer = offer;
+                return View(viewModel);
+            }
+
+            var fileName = _blobService.GetFileName(viewModel);
+            var succeeded = await _blobService.AddFile(viewModel.CvFile, fileName);
+
+            if (!succeeded)
+                return StatusCode(500);
+
+            JobApplication jobApplication = viewModel as JobApplication;
+            jobApplication.CvFileName = fileName;
+
+            succeeded = await _applicationService.AddJobApplicationAsync(jobApplication);
 
             if (!succeeded)
                 return StatusCode(500);
