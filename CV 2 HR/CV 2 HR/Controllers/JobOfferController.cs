@@ -11,13 +11,15 @@ namespace CV_2_HR.Controllers
 {
     public class JobOfferController : Controller
     {
-        private IJobOfferService _offerService;
-        private ICompanyService _companyService;
+        private readonly IJobOfferService _offerService;
+        private readonly ICompanyService _companyService;
+        private readonly IAuthorizationService _authorizationService;
 
-        public JobOfferController(IJobOfferService offerService, ICompanyService companyService)
+        public JobOfferController(IJobOfferService offerService, ICompanyService companyService, IAuthorizationService authorizationService)
         {
             _offerService = offerService;
             _companyService = companyService;
+            _authorizationService = authorizationService;
         }
 
         public async Task<IActionResult> Index()
@@ -51,6 +53,7 @@ namespace CV_2_HR.Controllers
         [Authorize(Policy = "Manager")]
         public async Task<IActionResult> Edit(int? id)
         {
+
             if (id == null)
                 return BadRequest();
 
@@ -59,7 +62,15 @@ namespace CV_2_HR.Controllers
             if (offer == null)
                 return NotFound();
 
-            return View(offer);
+            var userId = HttpContext.User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
+            if (userId == offer.UserId)
+                return View(offer);
+
+            var adminAuthorizationResult = _authorizationService.AuthorizeAsync(User, "Admin");
+            if ((await adminAuthorizationResult).Succeeded)
+                return View(offer);
+
+            return RedirectToAction("Denied", "Session");
         }
 
         [HttpPost]
@@ -74,6 +85,11 @@ namespace CV_2_HR.Controllers
                 return View(newOffer);
             }
             
+            var userId = HttpContext.User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
+            var adminAuthorizationResult = _authorizationService.AuthorizeAsync(User, "Admin");
+            if (userId != newOffer.UserId && !(await adminAuthorizationResult).Succeeded)
+                return RedirectToAction("Denied", "Session");
+
             bool succeeded = await _offerService.UpdateOffer(newOffer);
 
             if (!succeeded)
@@ -94,6 +110,11 @@ namespace CV_2_HR.Controllers
 
             if (offer == null)
                 return NotFound();
+
+            var userId = HttpContext.User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
+            var adminAuthorizationResult = _authorizationService.AuthorizeAsync(User, "Admin");
+            if (userId != offer.UserId && !(await adminAuthorizationResult).Succeeded)
+                return RedirectToAction("Denied", "Session");
 
             bool succeeded = await _offerService.RemoveOffer(offer);
 

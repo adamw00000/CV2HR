@@ -83,6 +83,10 @@ namespace CV_2_HR.Controllers
                 return BadRequest();
 
             var application = await _applicationService.GetJobApplicationAsync(id.Value);
+            if (application == null)
+            {
+                return NotFound();
+            }
 
             var userId = HttpContext.User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
 
