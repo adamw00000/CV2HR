@@ -51,7 +51,9 @@
                 {
                     <div>
                         <label>Valid:</label>
-                        <span>@Model.ValidUntil.Value.Subtract(DateTime.Now).Days days (@Model.ValidUntil)</span>
+                        <span>
+                            @Model.ValidUntil.Value.Subtract(DateTime.Now).Days days (@Html.DisplayFor(m => m.ValidUntil))
+                        </span>
                     </div>
                 }
             </div>

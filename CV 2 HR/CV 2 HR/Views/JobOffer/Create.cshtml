@@ -125,7 +125,7 @@
                     var ms = moment(now, "DD/MM/YYYY HH:mm:ss").diff(moment(then, "DD/MM/YYYY HH:mm:ss"));
                     var d = moment.duration(ms);
                     var s = Math.floor(d.asDays());
-                    return s + ' days (' + now.format("DD.MM.YYYY HH:mm:ss") + ')';
+                    return s + ' days (' + now.format("DD.MM.YYYY") + ')';
                 }
             },
             created: function () {

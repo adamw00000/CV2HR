@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace CV_2_HR.Models
@@ -24,6 +25,7 @@ namespace CV_2_HR.Models
         [Display(Name = "Salary to")]
         public decimal? SalaryTo { get; set; }
 
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd.MM.yyy HH:mm:ss}")]
         public DateTime Created { get; set; }
 
         [Required]
@@ -34,7 +36,7 @@ namespace CV_2_HR.Models
         public string Description { get; set; }
 
         [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyy-MM-dd}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd.MM.yyy}")]
         [Display(Name = "Valid until")]
         public DateTime? ValidUntil { get; set; }
 
