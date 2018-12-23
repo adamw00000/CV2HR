@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HtmlAgilityPack;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -32,7 +33,7 @@ namespace CV_2_HR.Models
         public string Location { get; set; }
 
         [Required]
-        [MinLength(100)]
+        [MinLength(100, ErrorMessage = "Description should contain at least 100 characters")]
         public string Description { get; set; }
 
         [DataType(DataType.Date)]
@@ -62,6 +63,16 @@ namespace CV_2_HR.Models
             if (ValidUntil < DateTime.Now)
             {
                 yield return new ValidationResult("Valid until cannot be a past date", new[] { "ValidUntil" });
+            }
+
+            var result = WebUtility.HtmlDecode(Description);
+            HtmlDocument htmlDoc = new HtmlDocument();
+            htmlDoc.LoadHtml(result);
+            var text = htmlDoc.DocumentNode.InnerText;
+
+            if (text.Length < 100)
+            {
+                yield return new ValidationResult("Description should contain at least 100 characters", new[] { "Description" });
             }
         }
     }
