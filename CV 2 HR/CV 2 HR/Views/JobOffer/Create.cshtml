@@ -57,8 +57,9 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="Description" class="control-label"></label>
-                    <textarea asp-for="Description" v-model="description" class="form-control"
-                              placeholder="Enter description (min. 100 characters)" required minlength="100"></textarea>
+                    <textarea asp-for="Description" v-model="description" class="form-control" required minlength="100"
+                              placeholder="Enter description (min. 100 characters)" v-show="false" v-cloak></textarea>
+                    <ckeditor type="classic" v-model="description" :config="config" id="editor"></ckeditor>
                     <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
                 <div class="form-group">
@@ -68,55 +69,27 @@
         </div>
     </div>
 
-    <h1 class="display-1 text-center text-info">Offer preview below</h1>
-    <div class="row row-box" v-cloak>
-        <h1>
-            <span>{{ jobTitle }}</span>
-        </h1>
-        <div class="col-md-8">
-            <div class="offer-description" id="previewMarkdown">
-                <span>{{ description }}</span>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="offer-details">
-                <div class="form-group">
-                    <div>
-                        <label asp-for="Company">Company:</label>
-                        <span>{{ company }}</span>
-                    </div>
-                    <div>
-                        <label asp-for="Location">Location:</label>
-                        <span>{{ location }}</span>
-                    </div>
-                    <div v-if="salaryFrom">
-                        <label asp-for="SalaryFrom">Salary from:</label>
-                        <span>{{ salaryFrom }} (PLN)</span>
-                    </div>
-                    <div v-if="salaryTo">
-                        <label asp-for="SalaryTo">Salary to:</label>
-                        <span>{{ salaryTo }} (PLN)</span>
-                    </div>
-                    <div>
-                        <label asp-for="Created">Created:</label>
-                        <span>{{ createdPretty }}</span>
-                    </div>
-                    <div v-if="validUntil">
-                        <label>Valid:</label>
-                        <span>{{ validUntilPretty }}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <partial name="_JobOfferPreviewPartial" />
 </div>
 
 @section Scripts {
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.js"></script>
+    <script src="~/lib/vue-ckeditor5.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/11.2.0/classic/ckeditor.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.min.js"></script>
     <script>
+        const options = {
+            editors: {
+                classic: ClassicEditor,
+            },
+            name: 'ckeditor'
+        }
+
+        Vue.use(VueCkeditor.plugin, options);
+
         var vm = new Vue({
             el: '#vuePage',
             data: {
@@ -127,7 +100,12 @@
                 salaryTo: null,
                 validUntil: "",
                 description: "",
-                created: moment()
+                created: moment(),
+                config: {
+                    language: 'en',
+                    toolbar: ["heading", "bold", "italic", "link", "bulletedList", "numberedList", "blockQuote", "insertTable",
+                        "mediaEmbed", "undo", "redo"]
+                }
             },
             computed: {
                 company() {
@@ -136,7 +114,7 @@
                     return $('#companySelect option[value=' + this.companyIndex + ']').text();
                 },
                 createdPretty() {
-                    return this.created.format("YYYY-MM-DD HH:mm:ss");
+                    return this.created.format("DD.MM.YYYY HH:mm:ss");
                 },
                 validUntilPretty() {
                     if (!this.validUntil)
@@ -147,7 +125,7 @@
                     var ms = moment(now, "DD/MM/YYYY HH:mm:ss").diff(moment(then, "DD/MM/YYYY HH:mm:ss"));
                     var d = moment.duration(ms);
                     var s = Math.floor(d.asDays());
-                    return s + ' days (' + now.format("YYYY-MM-DD HH:mm:ss") + ')';
+                    return s + ' days (' + now.format("DD.MM.YYYY HH:mm:ss") + ')';
                 }
             },
             created: function () {
@@ -157,14 +135,24 @@
                 }, 1000);
             },
             mounted: function () {
+                var decodeHTML = function (html) {
+                    var txt = document.createElement('textarea');
+                    txt.innerHTML = html;
+                    return txt.value;
+                };
+                
+                @{
+                    string validUntilBase = Model.ValidUntil.HasValue ? Model.ValidUntil.Value.ToString("yyy-MM-dd") : "";
+                }
+
                 this.jobTitle = '@Model.JobTitle';
-                if ('@Model.CompanyId' != 0)
+                if ('@Model.CompanyId' != '0')
                     this.companyIndex = '@Model.CompanyId';
                 this.location = '@Model.Location';
                 this.salaryFrom = '@(Model.SalaryFrom == null ? null : Model.SalaryFrom)';
                 this.salaryTo = '@(Model.SalaryTo == null ? null : Model.SalaryTo)';
-                this.validUntil = '@Model.ValidUntil' === '' ? '' : moment(@Model.ValidUntil);
-                this.description = '@Model.Description';
+                this.validUntil = '@Model.ValidUntil' === '' ? '' : '@validUntilBase';
+                this.description = decodeHTML('@Model.Description');
             }
         });
 
@@ -184,6 +172,11 @@
                     }
                 }
             });
+        </script>*@
+    @*<script src="https://cdn.ckeditor.com/4.11.1/standard/ckeditor.js"></script>
+        <script src="https://cdn.ckeditor.com/4.11.1/standard/adapters/jquery.js"></script>
+        <script>
+            $('textarea').ckeditor();
         </script>*@
 }
 

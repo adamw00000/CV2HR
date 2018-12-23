@@ -4,44 +4,137 @@
     ViewData["Title"] = "Edit";
 }
 
-<div class="row">
-    <div class="col-sm-12">
-        <h2>Edit job offer</h2>
-        <form asp-action="Edit" method="post">
-            <input asp-for="Id" hidden />
-            <input asp-for="Location" hidden />
-            <input asp-for="CompanyId" hidden />
-            <div class="form-group">
-                <label asp-for="JobTitle"></label>
-                <input asp-for="JobTitle" class="form-control" />
-                <span asp-validation-for="JobTitle" class="text-danger" required></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SalaryFrom"></label>
-                <input asp-for="SalaryFrom" class="form-control" />
-                <span asp-validation-for="SalaryFrom" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SalaryTo"></label>
-                <input asp-for="SalaryTo" class="form-control" />
-                <span asp-validation-for="SalaryTo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ValidUntil" class="control-label"></label>
-                <div class="input-group">
-                    <input asp-for="ValidUntil" v-model="validUntil" class="form-control" type="date" date />
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
+<div id="vuePage">
+    <div class="row">
+        <div class="col-sm-12">
+            <h2>Edit job offer</h2>
+            <form asp-action="Edit" method="post">
+                <input asp-for="Id" hidden />
+                <input asp-for="UserId" hidden />
+                <input asp-for="Location" v-model="location" hidden />
+                <input asp-for="CompanyId" v-model="companyIndex" hidden />
+                <div class="form-group">
+                    <label asp-for="JobTitle"></label>
+                    <input asp-for="JobTitle" v-model="jobTitle" class="form-control" />
+                    <span asp-validation-for="JobTitle" class="text-danger" required></span>
                 </div>
-                <span asp-validation-for="ValidUntil" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description"></label>
-                <textarea asp-for="Description" class="form-control" required></textarea>
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <button type="submit" class="btn btn-primary">Save</button>
-        </form>
+                <div class="form-group">
+                    <label asp-for="SalaryFrom"></label>
+                    <input asp-for="SalaryFrom" v-model="salaryFrom" class="form-control" />
+                    <span asp-validation-for="SalaryFrom" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="SalaryTo"></label>
+                    <input asp-for="SalaryTo" v-model="salaryTo" class="form-control" />
+                    <span asp-validation-for="SalaryTo" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ValidUntil" class="control-label"></label>
+                    <div class="input-group">
+                        <input asp-for="ValidUntil" v-model="validUntil" class="form-control" type="date" date />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                    <span asp-validation-for="ValidUntil" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description"></label>
+                    <textarea asp-for="Description" v-model="description" class="form-control" required
+                              v-show="false" v-cloak></textarea>
+                    <ckeditor type="classic" v-model="description" :config="config" id="editor"></ckeditor>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </form>
+        </div>
     </div>
+
+    <partial name="_JobOfferPreviewPartial" />
 </div>
+
+@section Scripts {
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+
+    <script src="~/lib/vue-ckeditor5.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/11.2.0/classic/ckeditor.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.min.js"></script>
+    <script>
+        const options = {
+            editors: {
+                classic: ClassicEditor,
+            },
+            name: 'ckeditor'
+        }
+
+        Vue.use(VueCkeditor.plugin, options);
+
+        var vm = new Vue({
+            el: '#vuePage',
+            data: {
+                jobTitle: "",
+                companyIndex: "",
+                company: "",
+                location: "",
+                salaryFrom: null,
+                salaryTo: null,
+                validUntil: "",
+                description: "",
+                createdPretty: moment().format("YYYY-MM-DD HH:mm:ss"),
+                config: {
+                    language: 'en',
+                    toolbar: ["heading", "bold", "italic", "link", "bulletedList", "numberedList", "blockQuote", "insertTable",
+                        "mediaEmbed", "undo", "redo"]
+                }
+            },
+            computed: {
+                validUntilPretty() {
+                    if (!this.validUntil)
+                        return null;
+                    var now = moment(this.validUntil);
+                    var then = moment();
+
+                    var ms = moment(now, "DD/MM/YYYY HH:mm:ss").diff(moment(then, "DD/MM/YYYY HH:mm:ss"));
+                    var d = moment.duration(ms);
+                    var s = Math.floor(d.asDays());
+                    return s + ' days (' + now.format("DD.MM.YYYY HH:mm:ss") + ')';
+                }
+            },
+            mounted: function () {
+                var decodeHTML = function (html) {
+                    var txt = document.createElement('textarea');
+                    txt.innerHTML = html;
+                    return txt.value;
+                };
+
+                @{
+                    string validUntilBase = Model.ValidUntil.HasValue ? Model.ValidUntil.Value.ToString("yyy-MM-dd") : "";
+                }
+
+                this.jobTitle = '@Model.JobTitle';
+                if ('@Model.CompanyId' != '0')
+                    this.companyIndex = '@Model.CompanyId';
+                this.location = '@Model.Location';
+                this.company = '@Model.Company.Name';
+                this.createdPretty = moment('@Model.Created.ToString("yyy-MM-dd HH:mm:ss")').format("DD.MM.YYYY HH:mm:ss");
+                this.salaryFrom = '@(Model.SalaryFrom == null ? null : Model.SalaryFrom)';
+                this.salaryTo = '@(Model.SalaryTo == null ? null : Model.SalaryTo)';
+                this.validUntil = '@Model.ValidUntil' === '' ? '' : '@validUntilBase';
+                this.description = decodeHTML('@Model.Description');
+            }
+        });
+
+    </script>
+
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
+}
+
+<style>
+    [v-cloak] {
+        display: none;
+    }
+</style>

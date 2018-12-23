@@ -1,0 +1,45 @@
+﻿@model JobOffer
+
+<div>
+    <h1 class="display-1 text-center text-info">Offer preview below</h1>
+    <div class="row row-box" v-cloak>
+        <h1>
+            <span>{{ jobTitle }}</span>
+        </h1>
+        <div class="col-md-8">
+            <div class="offer-description" id="previewMarkdown">
+                <span v-html="description"></span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="offer-details">
+                <div class="form-group">
+                    <div>
+                        <label asp-for="Company">Company:</label>
+                        <span>{{ company }}</span>
+                    </div>
+                    <div>
+                        <label asp-for="Location">Location:</label>
+                        <span>{{ location }}</span>
+                    </div>
+                    <div v-if="salaryFrom">
+                        <label asp-for="SalaryFrom">Salary from:</label>
+                        <span>{{ salaryFrom }} (PLN)</span>
+                    </div>
+                    <div v-if="salaryTo">
+                        <label asp-for="SalaryTo">Salary to:</label>
+                        <span>{{ salaryTo }} (PLN)</span>
+                    </div>
+                    <div>
+                        <label asp-for="Created">Created:</label>
+                        <span>{{ createdPretty }}</span>
+                    </div>
+                    <div v-if="validUntil">
+                        <label>Valid:</label>
+                        <span>{{ validUntilPretty }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

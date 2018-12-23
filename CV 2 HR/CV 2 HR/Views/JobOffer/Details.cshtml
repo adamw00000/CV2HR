@@ -18,7 +18,7 @@
 </div>
 
 <div id="vuePage">
-    @if ((await adminAuthorizationResult).Succeeded || ((await managerAuthorizationResult).Succeeded && Model.UserId == User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value))
+    @if (User.Identity.IsAuthenticated && ((await adminAuthorizationResult).Succeeded || ((await managerAuthorizationResult).Succeeded && Model.UserId == User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value)))
     {
         <div class="row row-box">
             <div class="col-md-12">
@@ -95,14 +95,19 @@
                             '<td>' + application.phoneNumber + '</td>' +
                             '</tr>')
                         htmlApplication.appendTo('#applications');
-
-                        if (application.userId == '@User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value') {
-                            loadingData.didUserApply = true;
-                            $('<tr>' +
-                                '<td><a href="/JobApplication/Details/' + application.id + '">' + application.firstName + ' ' + application.lastName + '</a></td>' +
-                                '<td>' + application.emailAddress + '</td>' +
-                                '<td>' + application.phoneNumber + '</td>' +
-                                '</tr>').appendTo('#userApplication');
+                        @{ 
+                            string userId = User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier") == null ? "" :
+                                User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
+                        }
+                        if ('@User.Identity.IsAuthenticated' != 'False') {
+                            if (application.userId == '@userId') {
+                                loadingData.didUserApply = true;
+                                $('<tr>' +
+                                    '<td><a href="/JobApplication/Details/' + application.id + '">' + application.firstName + ' ' + application.lastName + '</a></td>' +
+                                    '<td>' + application.emailAddress + '</td>' +
+                                    '<td>' + application.phoneNumber + '</td>' +
+                                    '</tr>').appendTo('#userApplication');
+                            }
                         }
                     })
                 }

@@ -68,7 +68,11 @@ namespace CV_2_HR.Controllers
         public async Task<IActionResult> Edit(JobOffer newOffer)
         {
             if (!ModelState.IsValid)
+            {
+                var offer = await _offerService.GetOfferAsync(newOffer.Id);
+                newOffer.Company = offer.Company;
                 return View(newOffer);
+            }
             
             bool succeeded = await _offerService.UpdateOffer(newOffer);
 

@@ -12,7 +12,7 @@
     </h1>
     <div class="col-md-8">
         <div class="offer-description" id="previewMarkdown">
-            <span>@Html.DisplayFor(m => m.Description)</span>
+            <span>@Html.Raw(Model.Description)</span>
         </div>
     </div>
     <div class="col-md-4">
