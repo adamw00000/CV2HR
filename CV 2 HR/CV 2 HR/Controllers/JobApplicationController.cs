@@ -72,7 +72,10 @@ namespace CV_2_HR.Controllers
             var succeeded = await _applicationService.AddJobApplicationAsync(jobApplication);
 
             if (!succeeded)
+            {
+                await _blobService.RemoveFile(fileName);
                 return StatusCode(500);
+            }
 
             return RedirectToAction("Details", "JobOffer", new { Id = jobApplication.OfferId });
         }

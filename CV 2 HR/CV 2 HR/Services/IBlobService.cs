@@ -11,5 +11,6 @@ namespace CV_2_HR.Services
         Task<Uri> AddFile(IFormFile file, string blobFileName);
         string GetFileName(JobApplicationCreateViewModel viewModel);
         void ValidateFile(IFormFile formFile, ModelStateDictionary modelState);
+        Task RemoveFile(string fileName);
     }
 }

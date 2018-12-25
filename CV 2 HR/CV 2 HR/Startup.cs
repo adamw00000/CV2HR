@@ -41,7 +41,8 @@ namespace CV_2_HR
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.Configure<AppSettings>(Configuration.GetSection("AppSettings")); services.AddSingleton<IConfiguration>(Configuration);
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+            services.AddSingleton<IConfiguration>(Configuration);
 
             services.AddAuthentication(sharedOptions =>
             {

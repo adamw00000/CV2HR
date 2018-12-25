@@ -1,6 +1,7 @@
 ﻿using CV_2_HR.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.Configuration;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using System;
@@ -17,11 +18,18 @@ namespace CV_2_HR.Services
 {
     public class BlobService: IBlobService
     {
+        private readonly IConfiguration _configuration;
+
+        public BlobService(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         public async Task<Uri> AddFile(IFormFile file, string blobFileName)
         {
             //byte[] fileContent;
             //await file.CopyToAsync(fileContent);
-            string connectionString = "DefaultEndpointsProtocol=https;AccountName=jobofferblobaw;AccountKey=icysqqg5VVrK0Wu24B0GL2tx4izPQFFthl+mdc9mGOfanvdaZo7aVFbbCEg7pytG+UmLjKeZrH/ZmYEZniFZFw==;EndpointSuffix=core.windows.net";
+            string connectionString = _configuration.GetConnectionString("BlobConnection");
             try
             {
                 Uri uri = null;
@@ -54,11 +62,25 @@ namespace CV_2_HR.Services
             }
         }
 
+        public async Task RemoveFile(string fileName)
+        {
+            string connectionString = _configuration.GetConnectionString("BlobConnection");
+
+            if (CloudStorageAccount.TryParse(connectionString, out CloudStorageAccount storageAccount))
+            {
+                CloudBlobClient cloudBlobClient = storageAccount.CreateCloudBlobClient();
+                CloudBlobContainer container = cloudBlobClient.GetContainerReference("applications");
+                CloudBlockBlob blockBlob = container.GetBlockBlobReference(fileName);
+
+                await blockBlob.DeleteIfExistsAsync();
+            }
+        }
+
         public string GetFileName(JobApplicationCreateViewModel viewModel)
         {
             return "cv_" + viewModel.Id + "_" + viewModel.FirstName + "_" + viewModel.LastName + "_" + DateTime.Now.Ticks + ".pdf";
         }
-        
+
         public void ValidateFile(IFormFile formFile, ModelStateDictionary modelState)
         {
             var fieldDisplayName = string.Empty;
