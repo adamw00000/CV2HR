@@ -3,7 +3,8 @@
 @inject IAuthorizationService AuthorizationService
 
 @{
-    var authorizationResult = AuthorizationService.AuthorizeAsync(User, "Manager");
+    var managerAuthorizationResult = AuthorizationService.AuthorizeAsync(User, "Manager");
+    var adminAuthorizationResult = AuthorizationService.AuthorizeAsync(User, "Admin");
 }
 
 <div class="row row-box">
@@ -64,7 +65,7 @@
                     <button type="submit" class="btn btn-success">Apply Now</button>
                 </div>
             </form>
-            @if ((await authorizationResult).Succeeded)
+            @if (User.Identity.IsAuthenticated && ((await adminAuthorizationResult).Succeeded || ((await managerAuthorizationResult).Succeeded && Model.UserId == User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value)))
             {
                 <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
                 <form asp-action="Delete" style="display:inline">

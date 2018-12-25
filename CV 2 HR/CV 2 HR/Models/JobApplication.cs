@@ -33,7 +33,9 @@ namespace CV_2_HR.Models
         [Display(Name = "Contact agreement")]
         public bool ContactAgreement { get; set; }
         
-        public string CvFileName { get; set; }
+        [Url]
+        [Display(Name = "CV uri")]
+        public string CvUri { get; set; }
 
         [Required]
         public string UserId { get; set; }

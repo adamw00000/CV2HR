@@ -17,13 +17,14 @@ namespace CV_2_HR.Services
 {
     public class BlobService: IBlobService
     {
-        public async Task<bool> AddFile(IFormFile file, string blobFileName)
+        public async Task<Uri> AddFile(IFormFile file, string blobFileName)
         {
             //byte[] fileContent;
             //await file.CopyToAsync(fileContent);
             string connectionString = "DefaultEndpointsProtocol=https;AccountName=jobofferblobaw;AccountKey=icysqqg5VVrK0Wu24B0GL2tx4izPQFFthl+mdc9mGOfanvdaZo7aVFbbCEg7pytG+UmLjKeZrH/ZmYEZniFZFw==;EndpointSuffix=core.windows.net";
             try
             {
+                Uri uri = null;
                 if (CloudStorageAccount.TryParse(connectionString, out CloudStorageAccount storageAccount))
                 {
                     CloudBlobClient cloudBlobClient = storageAccount.CreateCloudBlobClient();
@@ -40,20 +41,22 @@ namespace CV_2_HR.Services
                     {
                         await blockBlob.UploadFromStreamAsync(stream);
                     }
+
+                    uri = blockBlob.Uri;
                     //await blockBlob.UploadFromByteArrayAsync(file, 0, file.Length);
                 }
 
-                return true;
+                return uri;
             }
             catch
             {
-                return false;
+                return null;
             }
         }
 
         public string GetFileName(JobApplicationCreateViewModel viewModel)
         {
-            return "cv_" + viewModel.Id + "_" + DateTime.Now.Ticks + ".pdf";
+            return "cv_" + viewModel.Id + "_" + viewModel.FirstName + "_" + viewModel.LastName + "_" + DateTime.Now.Ticks + ".pdf";
         }
         
         public void ValidateFile(IFormFile formFile, ModelStateDictionary modelState)

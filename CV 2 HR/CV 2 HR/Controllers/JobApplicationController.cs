@@ -61,15 +61,15 @@ namespace CV_2_HR.Controllers
             }
 
             var fileName = _blobService.GetFileName(viewModel);
-            var succeeded = await _blobService.AddFile(viewModel.CvFile, fileName);
+            var uri = await _blobService.AddFile(viewModel.CvFile, fileName);
 
-            if (!succeeded)
+            if (uri == null)
                 return StatusCode(500);
 
             JobApplication jobApplication = viewModel as JobApplication;
-            jobApplication.CvFileName = fileName;
+            jobApplication.CvUri = uri.ToString();
 
-            succeeded = await _applicationService.AddJobApplicationAsync(jobApplication);
+            var succeeded = await _applicationService.AddJobApplicationAsync(jobApplication);
 
             if (!succeeded)
                 return StatusCode(500);
