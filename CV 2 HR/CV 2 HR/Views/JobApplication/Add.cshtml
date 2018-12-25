@@ -7,7 +7,7 @@
 <div class="row page-box">
     <div class="col-md-12">
         <h2>Apply for <span class="text-primary">@Model.Offer.JobTitle</span></h2>
-        <form asp-action="Add" method="post" id="addForm" enctype="multipart/form-data" >
+        <form asp-action="Add" method="post" id="addForm" enctype="multipart/form-data">
             <input asp-for="OfferId" type="hidden" />
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
@@ -31,7 +31,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="CvFile" class="control-label"></label>
-                <input asp-for="CvFile" class="form-control" />
+                <input asp-for="CvFile" class="form-control" required/>
                 <span asp-validation-for="CvFile" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -55,7 +55,5 @@
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
     <script src="https://raw.githubusercontent.com/jquery-validation/jquery-validation/master/src/additional/phonePL.js"></script>
-    <script>
-        $("#addForm").validate();
-    </script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
 }

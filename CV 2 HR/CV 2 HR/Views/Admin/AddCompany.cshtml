@@ -11,7 +11,7 @@
         <form asp-action="AddCompany" method="post" id="addForm">
             <div class="form-group">
                 <label class="control-label" asp-for="Name"></label>
-                <input class="form-control" asp-for="Name" required/>
+                <input class="form-control" asp-for="Name" required />
                 <span class="text-danger" asp-validation-for="Name"></span>
             </div>
             <button class="btn btn-primary" type="submit">Add</button>
@@ -20,7 +20,7 @@
 </div>
 
 @section Scripts {
-    <script>
-        $("#addForm").validate();
-    </script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
 }
