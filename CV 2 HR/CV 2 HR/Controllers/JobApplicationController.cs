@@ -15,15 +15,15 @@ namespace CV_2_HR.Controllers
         private readonly IJobApplicationService _applicationService;
         private readonly IJobOfferService _offerService;
         private readonly IBlobService _blobService;
-        private readonly IAuthorizationService _authorizationService;
+        private readonly IUserManager _userManager;
 
         public JobApplicationController(IJobApplicationService applicationService, IJobOfferService offerService, 
-            IBlobService blobService, IAuthorizationService authorizationService)
+            IBlobService blobService, IUserManager userManager)
         {
             _applicationService = applicationService;
             _offerService = offerService;
             _blobService = blobService;
-            _authorizationService = authorizationService;
+            _userManager = userManager;
         }
         
         public async Task<IActionResult> Add(int id)
@@ -31,6 +31,9 @@ namespace CV_2_HR.Controllers
             var viewModel = new JobApplicationCreateViewModel { OfferId = id };
 
             var offer = await _offerService.GetOfferAsync(id);
+            if (offer == null)
+                return NotFound();
+
             viewModel.Offer = offer;
             return View(viewModel);
         }
@@ -39,21 +42,14 @@ namespace CV_2_HR.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(JobApplicationCreateViewModel viewModel)
         {
-            var userId = HttpContext.User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
+            var userId = _userManager.GetUserId();
             viewModel.UserId = userId;
 
-            ModelState.Clear();
+            ModelState.ClearValidationState("UserId");
             var result = TryValidateModel(viewModel);
-            if (!ModelState.IsValid)
-            {
-                var offer = await _offerService.GetOfferAsync(viewModel.OfferId);
-                viewModel.Offer = offer;
-                return View(viewModel);
-            }
-
             _blobService.ValidateFile(viewModel.CvFile, ModelState);
 
-            if (!ModelState.IsValid)
+            if (!result || !ModelState.IsValid)
             {
                 var offer = await _offerService.GetOfferAsync(viewModel.OfferId);
                 viewModel.Offer = offer;
@@ -91,13 +87,15 @@ namespace CV_2_HR.Controllers
                 return NotFound();
             }
 
-            var userId = HttpContext.User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
+            var userId = _userManager.GetUserId();
 
             if (userId == application.UserId)
                 return View(application);
 
-            var managerAuthorizationResult = _authorizationService.AuthorizeAsync(User, "Manager");
-            var adminAuthorizationResult = _authorizationService.AuthorizeAsync(User, "Admin");
+            var user = _userManager.GetUser();
+
+            var managerAuthorizationResult = _userManager.AuthorizeUserAsync("Manager");
+            var adminAuthorizationResult = _userManager.AuthorizeUserAsync("Admin");
             if ((await adminAuthorizationResult).Succeeded || 
                 ((await managerAuthorizationResult).Succeeded && application.Offer.UserId == userId))
                 return View(application);

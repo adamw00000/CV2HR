@@ -71,7 +71,7 @@ namespace CV_2_HR.Services
             _context.JobOffers.Remove(newOffer);
             
             var modified = await _context.SaveChangesAsync();
-            return modified == 1;
+            return modified >= 1;
         }
 
         public async Task<JobOfferPage> GetJobOffersSearchResultPageAsync(string searchstring, int pageNo)
