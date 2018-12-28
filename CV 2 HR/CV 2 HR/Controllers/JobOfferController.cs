@@ -13,13 +13,13 @@ namespace CV_2_HR.Controllers
     {
         private readonly IJobOfferService _offerService;
         private readonly ICompanyService _companyService;
-        private readonly IAuthorizationService _authorizationService;
+        private readonly IUserManager _userManager;
 
-        public JobOfferController(IJobOfferService offerService, ICompanyService companyService, IAuthorizationService authorizationService)
+        public JobOfferController(IJobOfferService offerService, ICompanyService companyService, IUserManager userManager)
         {
             _offerService = offerService;
             _companyService = companyService;
-            _authorizationService = authorizationService;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> Index()
@@ -65,11 +65,11 @@ namespace CV_2_HR.Controllers
             if (offer == null)
                 return NotFound();
 
-            var userId = HttpContext.User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
+            var userId = _userManager.GetUserId();
             if (userId == offer.UserId)
                 return View(offer);
 
-            var adminAuthorizationResult = _authorizationService.AuthorizeAsync(User, "Admin");
+            var adminAuthorizationResult = _userManager.AuthorizeUserAsync("Admin");
             if ((await adminAuthorizationResult).Succeeded)
                 return View(offer);
 
@@ -88,8 +88,8 @@ namespace CV_2_HR.Controllers
                 return View(newOffer);
             }
             
-            var userId = HttpContext.User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
-            var adminAuthorizationResult = _authorizationService.AuthorizeAsync(User, "Admin");
+            var userId = _userManager.GetUserId();
+            var adminAuthorizationResult = _userManager.AuthorizeUserAsync("Admin");
             if (userId != newOffer.UserId && !(await adminAuthorizationResult).Succeeded)
                 return RedirectToAction("Denied", "Session");
 
@@ -114,8 +114,8 @@ namespace CV_2_HR.Controllers
             if (offer == null)
                 return NotFound();
 
-            var userId = HttpContext.User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
-            var adminAuthorizationResult = _authorizationService.AuthorizeAsync(User, "Admin");
+            var userId = _userManager.GetUserId();
+            var adminAuthorizationResult = _userManager.AuthorizeUserAsync("Admin");
             if (userId != offer.UserId && !(await adminAuthorizationResult).Succeeded)
                 return RedirectToAction("Denied", "Session");
 
@@ -142,7 +142,7 @@ namespace CV_2_HR.Controllers
         [Authorize(Policy = "Manager")]
         public async Task<IActionResult> Create(JobOfferCreateViewModel model)
         {
-            var userId = HttpContext.User.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
+            var userId = _userManager.GetUserId();
             model.UserId = userId;
 
             ModelState.Clear();
