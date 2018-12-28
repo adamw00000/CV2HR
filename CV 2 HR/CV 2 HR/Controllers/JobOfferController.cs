@@ -47,6 +47,9 @@ namespace CV_2_HR.Controllers
         {
             var offer = await _offerService.GetOfferAsync(id);
 
+            if (offer == null)
+                return NotFound();
+
             return View(offer);
         }
 

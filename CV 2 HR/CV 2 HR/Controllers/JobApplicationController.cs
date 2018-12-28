@@ -42,6 +42,9 @@ namespace CV_2_HR.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(JobApplicationCreateViewModel viewModel)
         {
+            if (viewModel == null)
+                throw new NullReferenceException();
+
             var userId = _userManager.GetUserId();
             viewModel.UserId = userId;
 

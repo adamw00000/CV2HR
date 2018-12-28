@@ -75,5 +75,41 @@ namespace CV_2_HR.Models
                 yield return new ValidationResult("Description should contain at least 100 characters", new[] { "Description" });
             }
         }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is JobOffer offer))
+                return false;
+
+            if (Id != offer.Id || 
+                CompanyId != offer.CompanyId ||
+                JobTitle != offer.JobTitle ||
+                Location != offer.Location ||
+                SalaryFrom != offer.SalaryFrom ||
+                SalaryTo != offer.SalaryTo ||
+                UserId != offer.UserId ||
+                ValidUntil != offer.ValidUntil ||
+                Created != offer.Created ||
+                Description != offer.Description)
+                return false;
+
+            return true;
+        }
+
+        public override int GetHashCode()
+        {
+            var hash = new HashCode();
+            hash.Add(Id);
+            hash.Add(JobTitle);
+            hash.Add(CompanyId);
+            hash.Add(SalaryFrom);
+            hash.Add(SalaryTo);
+            hash.Add(Created);
+            hash.Add(Location);
+            hash.Add(Description);
+            hash.Add(ValidUntil);
+            hash.Add(UserId);
+            return hash.ToHashCode();
+        }
     }
 }

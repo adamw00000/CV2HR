@@ -99,6 +99,16 @@ namespace CV_2_HR.UnitTests
         }
 
         [Fact]
+        public async Task AddPost_WhenModelIsNull_ThrowsNullReferenceException()
+        {
+            JobApplicationCreateViewModel viewModel = null;
+
+            var controller = new JobApplicationController(null, null, null, null);
+
+            var result = await controller.Add(viewModel).ShouldThrowAsync<NullReferenceException>();
+        }
+
+        [Fact]
         public async Task AddPost_WhenModelIsNotValid_ReturnsAddView()
         {
             int id = 1;
