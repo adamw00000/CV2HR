@@ -4,10 +4,12 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <RootNamespace>CV_2_HR</RootNamespace>
     <UserSecretsId>b8975a67-40fe-47ba-87ed-674729288027</UserSecretsId>
+    <ApplicationInsightsResourceId>/subscriptions/edca641f-7711-46f3-9568-bd70374baf2f/resourcegroups/JobOfferApplication/providers/microsoft.insights/components/JobOfferAdamWawrzenczyk</ApplicationInsightsResourceId>
+    <ApplicationInsightsAnnotationResourceId>/subscriptions/edca641f-7711-46f3-9568-bd70374baf2f/resourcegroups/JobOfferApplication/providers/microsoft.insights/components/JobOfferAdamWawrzenczyk</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile></DocumentationFile>
+    <DocumentationFile>CV 2 HR.xml</DocumentationFile>
     <NoWarn>1701;1702; 1591</NoWarn>
   </PropertyGroup>
 
@@ -24,6 +26,7 @@
     <PackageReference Include="bootstrap" Version="3.3.7" />
     <PackageReference Include="FontAwesome" Version="4.7.0" />
     <PackageReference Include="HtmlAgilityPack" Version="1.8.11" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Identity.Client" Version="2.5.0-preview" />
@@ -42,6 +45,10 @@
 
   <ItemGroup>
     <Folder Include="logs\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 
 </Project>
