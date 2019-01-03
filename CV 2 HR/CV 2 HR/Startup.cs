@@ -5,8 +5,8 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using CommunityCertForT;
-using CV_2_HR.EF_Core;
-using CV_2_HR.Services;
+using CV2HR.EF_Core;
+using CV2HR.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
@@ -20,7 +20,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 
-namespace CV_2_HR
+namespace CV2HR
 {
     public class Startup
     {

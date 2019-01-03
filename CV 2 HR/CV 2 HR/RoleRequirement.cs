@@ -8,7 +8,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace CV_2_HR
+namespace CV2HR
 {
     internal class RoleRequirement : IAuthorizationRequirement
     {

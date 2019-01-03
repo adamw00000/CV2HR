@@ -7,7 +7,7 @@ using Xunit;
 using Moq;
 using Shouldly;
 
-namespace CV_2_HR.UITests
+namespace CV2HR.UITests
 {
     public class JobOfferUITests
     {

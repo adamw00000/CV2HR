@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <RootNamespace>CV_2_HR</RootNamespace>
+    <RootNamespace>CV2HR</RootNamespace>
     <UserSecretsId>b8975a67-40fe-47ba-87ed-674729288027</UserSecretsId>
     <ApplicationInsightsResourceId>/subscriptions/edca641f-7711-46f3-9568-bd70374baf2f/resourcegroups/JobOfferApplication/providers/microsoft.insights/components/JobOfferAdamWawrzenczyk</ApplicationInsightsResourceId>
     <ApplicationInsightsAnnotationResourceId>/subscriptions/edca641f-7711-46f3-9568-bd70374baf2f/resourcegroups/JobOfferApplication/providers/microsoft.insights/components/JobOfferAdamWawrzenczyk</ApplicationInsightsAnnotationResourceId>

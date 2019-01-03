@@ -1,8 +1,8 @@
 using System;
 using Xunit;
-using CV_2_HR.Controllers;
-using CV_2_HR.Models;
-using CV_2_HR.Services;
+using CV2HR.Controllers;
+using CV2HR.Models;
+using CV2HR.Services;
 using Moq;
 using System.Threading.Tasks;
 using Shouldly;
@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Http;
 
-namespace CV_2_HR.UnitTests
+namespace CV2HR.UnitTests
 {
     public class JobApplicationControllerTests
     {

@@ -1,6 +1,6 @@
-﻿using CV_2_HR.Controllers;
-using CV_2_HR.Models;
-using CV_2_HR.Services;
+﻿using CV2HR.Controllers;
+using CV2HR.Models;
+using CV2HR.Services;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Shouldly;
@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TechTalk.SpecFlow;
 
-namespace CV_2_HR.IntegrationTests
+namespace CV2HR.IntegrationTests
 {
     [Binding]
     public class AccessingTheJobOfferDetailsSteps

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace CV_2_HR.Services
+namespace CV2HR.Services
 {
     public class HttpContextUserManager : IUserManager
     {

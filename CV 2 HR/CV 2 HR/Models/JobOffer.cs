@@ -6,7 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace CV_2_HR.Models
+namespace CV2HR.Models
 {
     public class JobOffer: IValidatableObject
     {

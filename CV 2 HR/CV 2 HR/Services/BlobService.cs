@@ -1,4 +1,4 @@
-﻿using CV_2_HR.Models;
+﻿using CV2HR.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Configuration;
@@ -14,7 +14,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CV_2_HR.Services
+namespace CV2HR.Services
 {
     public class BlobService: IBlobService
     {

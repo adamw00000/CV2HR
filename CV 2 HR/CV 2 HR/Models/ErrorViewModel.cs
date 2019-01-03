@@ -1,6 +1,6 @@
 using System;
 
-namespace CV_2_HR.Models
+namespace CV2HR.Models
 {
     public class ErrorViewModel
     {

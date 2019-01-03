@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace CV_2_HR.Migrations
+namespace CV2HR.Migrations
 {
     public partial class InitDatabase : Migration
     {

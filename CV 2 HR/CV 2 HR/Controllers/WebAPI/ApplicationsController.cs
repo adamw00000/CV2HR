@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CV_2_HR.Services;
+using CV2HR.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CV_2_HR.Controllers
+namespace CV2HR.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

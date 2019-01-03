@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace CV_2_HR.IntegrationTests
+namespace CV2HR.IntegrationTests
 {
     using TechTalk.SpecFlow;
     

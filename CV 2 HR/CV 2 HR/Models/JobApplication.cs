@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CV_2_HR.Models
+namespace CV2HR.Models
 {
     public class JobApplication: IValidatableObject
     {

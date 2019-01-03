@@ -4,13 +4,13 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using CV_2_HR.Models;
+using CV2HR.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using CommunityCertForT;
 using CommunityCertForT.Helpers;
 
-namespace CV_2_HR.Controllers
+namespace CV2HR.Controllers
 {
     public class HomeController : Controller
     {

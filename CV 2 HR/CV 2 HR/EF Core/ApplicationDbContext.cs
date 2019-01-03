@@ -1,4 +1,4 @@
-﻿using CV_2_HR.Models;
+﻿using CV2HR.Models;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CV_2_HR.EF_Core
+namespace CV2HR.EF_Core
 {
     public class ApplicationDbContext : DbContext
     {
