@@ -13,5 +13,5 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- script: dotnet build --configuration $(buildConfiguration)
+- script: dotnet build "CV 2 HR/CV 2 HR/CV 2 HR/CV2HR.csproj" --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
