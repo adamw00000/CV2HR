@@ -89,7 +89,7 @@ namespace CV2HR.Controllers
             {
                 return NotFound();
             }
-
+            
             var userId = _userManager.GetUserId();
 
             if (userId == application.UserId)

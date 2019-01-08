@@ -31,7 +31,7 @@ namespace CV2HR.Services
 
         public async Task<AuthorizationResult> AuthorizeUserAsync(string role)
         {
-            return await _authorizationService.AuthorizeAsync(GetUser(), "Manager");
+            return await _authorizationService.AuthorizeAsync(GetUser(), role);
         }
     }
 }

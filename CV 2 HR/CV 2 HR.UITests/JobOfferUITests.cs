@@ -28,7 +28,7 @@ namespace CV2HR.UITests
 
         private static void EnterJobOfferIndex(ChromeDriver driver)
         {
-            driver.Url = "https://localhost:44310/";
+            driver.Url = "https://localhost:44318/";
             driver.FindElement(By.XPath("//*[@id=\"cookieConsent\"]/div/div[2]/div/button")).Click();
             driver.FindElement(By.LinkText("Job Offers")).Click();
         }
