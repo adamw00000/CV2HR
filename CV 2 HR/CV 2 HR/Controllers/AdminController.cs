@@ -49,9 +49,6 @@ namespace CV2HR.Controllers
         
         public async Task<IActionResult> RemoveCompany(Company removedCompany)
         {
-            if (!ModelState.IsValid)
-                return RedirectToAction("Index");
-
             bool succeeded = await _companyService.RemoveCompanyAsync(removedCompany);
 
             if (!succeeded)

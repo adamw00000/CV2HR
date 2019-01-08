@@ -14,7 +14,7 @@
                     <th class="col col-md-1">Actions</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="companies">
                 @foreach (var company in Model)
                 {
                     <tr>
@@ -29,6 +29,45 @@
             </tbody>
         </table>
 
-        @Html.ActionLink("Add company", "AddCompany", new { }, new { @class = "btn btn-primary" })
+        <form method="post" action="/api/companies/" id="addCompanyForm">
+            <div class="form-group">
+                <input type="text" name="name" class="form-control" required />
+            </div>
+            <button type="submit" class="btn btn-primary">Add company</button>
+        </form>
+        @*@Html.ActionLink("Add company", "AddCompany", new { }, new { @class = "btn btn-primary" })*@
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        $("#addCompanyForm").submit(function () {
+            event.preventDefault();
+
+            var $form = $(this);
+            var name = $form.find("input[name='name']").val();
+            var url = $form.attr("action");
+            
+            $.ajax({
+                contentType: 'application/json',
+                type: "POST",
+                url: url,
+                data: JSON.stringify({ "Name": name }),
+                success: function () {
+                    var uri = "/api/companies";
+                    $.getJSON(uri)
+                        .done(function (data) {
+                            $("#companies").empty();
+                            $.each(data, function (key, company) {
+                                $('<tr>' +
+                                    '<td><span>' + company.name + '</span></td>' +
+                                    '<td><a href=/Admin/RemoveCompany/' + company.id + ' class="btn btn-danger">Remove</td>' +
+                                    '</tr>').appendTo("#companies");
+                            });
+                            document.getElementById('addCompanyForm').reset();
+                        });
+                }
+            });
+        });
+    </script>
+}

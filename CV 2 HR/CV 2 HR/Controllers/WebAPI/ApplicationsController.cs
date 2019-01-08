@@ -6,7 +6,7 @@ using CV2HR.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CV2HR.Controllers
+namespace CV2HR.Controllers.Api
 {
     [Route("api/[controller]")]
     [ApiController]
