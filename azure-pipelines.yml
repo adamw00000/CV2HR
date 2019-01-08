@@ -7,11 +7,13 @@ trigger:
 - master
 
 pool:
-  vmImage: 'Ubuntu-16.04'
+  vmImage: 'vs2017-win2016'
 
 variables:
   buildConfiguration: 'Release'
 
 steps:
-- script: dotnet build "CV 2 HR/CV 2 HR/CV2HR.csproj" --configuration $(buildConfiguration)
+- script: dotnet publish "CV 2 HR/CV 2 HR/CV2HR.csproj" --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)
   displayName: 'dotnet build $(buildConfiguration)'
+
+- task: PublishBuildArtifacts@1
