@@ -34,6 +34,11 @@ namespace CV2HR.Controllers
             if (offer == null)
                 return NotFound();
 
+            if (offer.ValidUntil.HasValue && offer.ValidUntil.Value < DateTime.Now)
+            {
+                return BadRequest("This offer has expired");
+            }
+
             viewModel.Offer = offer;
             return View(viewModel);
         }

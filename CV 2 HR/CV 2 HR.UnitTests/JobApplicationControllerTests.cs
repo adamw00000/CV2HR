@@ -22,33 +22,51 @@ namespace CV2HR.UnitTests
             Id = 1,
             CompanyId = 1,
             Created = new DateTime(2012, 1, 1),
-            ValidUntil = new DateTime(2100, 1, 1),
+            ValidUntil = DateTime.Now.AddDays(3),
             Description = new string('a', 1000),
             JobTitle = "Student",
             Location = "Warsaw",
             UserId = "offer author"
         };
-        readonly JobApplication testApplication = new JobApplication
+
+        JobOffer GetTestOffer()
         {
-            Id = 1,
-            ContactAgreement = true,
-            CvUri = "https://google.com",
-            EmailAddress = "aaa@aaa.aaa",
-            FirstName = "Jan",
-            LastName = "Kowalski",
-            OfferId = 1,
-            PhoneNumber = "111111111",
-            UserId = "user"
-        };
+            return new JobOffer
+            {
+                Id = 1,
+                CompanyId = 1,
+                Created = new DateTime(2012, 1, 1),
+                ValidUntil = DateTime.Now.AddDays(3),
+                Description = new string('a', 1000),
+                JobTitle = "Student",
+                Location = "Warsaw",
+                UserId = "offer author"
+            };
+        }
 
         JobApplication GetTestApplication()
         {
-            testApplication.Offer = testOffer;
+            JobApplication testApplication = new JobApplication()
+            {
+                Id = 1,
+                ContactAgreement = true,
+                CvUri = "https://google.com",
+                EmailAddress = "aaa@aaa.aaa",
+                FirstName = "Jan",
+                LastName = "Kowalski",
+                OfferId = 1,
+                PhoneNumber = "111111111",
+                UserId = "user",
+                Offer = testOffer
+            };
+
             return testApplication;
         }
 
         JobApplicationCreateViewModel GetTestApplicationCreateViewModel()
         {
+            var testApplication = GetTestApplication();
+
             var viewModel = new JobApplicationCreateViewModel
             {
                 ContactAgreement = testApplication.ContactAgreement,
@@ -78,6 +96,23 @@ namespace CV2HR.UnitTests
             var result = await controller.Add(id);
 
             result.ShouldBeOfType<NotFoundResult>();
+        }
+
+        [Fact]
+        public async Task AddGet_WhenOfferExpired_ReturnsBadRequest()
+        {
+            int id = -1;
+            var mockJobOfferService = new Mock<IJobOfferService>();
+            var offer = GetTestOffer();
+            offer.ValidUntil = DateTime.Now.AddDays(-2);
+            mockJobOfferService
+                .Setup(service => service.GetOfferAsync(id))
+                .ReturnsAsync(offer);
+            JobApplicationController controller = new JobApplicationController(null, mockJobOfferService.Object, null, null);
+
+            var result = await controller.Add(id);
+
+            result.ShouldBeOfType<BadRequestObjectResult>();
         }
 
         [Fact]

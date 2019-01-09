@@ -19,7 +19,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>1701;1702; 1591</NoWarn>
-    <OutputPath>CV2HR.dll</OutputPath>
+    <OutputPath></OutputPath>
     <DocumentationFile>CV2HR.xml</DocumentationFile>
   </PropertyGroup>
 
