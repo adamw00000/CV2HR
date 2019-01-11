@@ -15,5 +15,11 @@ namespace CV2HR.EF_Core
         public DbSet<JobApplication> JobApplications { get; set; }
         public DbSet<JobOffer> JobOffers { get; set; }
         public DbSet<Company> Companies { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<JobOffer>()
+                .HasIndex(offer => offer.JobTitle);
+        }
     }
 }

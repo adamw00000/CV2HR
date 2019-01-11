@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CV2HR</name>
+    </assembly>
+    <members>
+        <member name="M:CV2HR.Controllers.Api.ApplicationsController.Applications(System.Int32)">
+            <summary>
+            Gets list of applications for the job offer
+            </summary>
+            <param name="offerId">Job offer id</param>
+            <returns>A list of applications</returns>
+        </member>
+        <member name="M:CV2HR.Controllers.Api.CompaniesController.Add(CV2HR.Models.Company)">
+            <summary>
+            Adds a new company to the list
+            </summary>
+            <param name="newCompany">Name of the new company</param>
+            <returns>A job offer page</returns>
+        </member>
+        <member name="M:CV2HR.Controllers.Api.CompaniesController.Companies">
+            <summary>
+            Gets a list of all companies
+            </summary>
+            <returns>A job offer page</returns>
+        </member>
+        <member name="M:CV2HR.Controllers.Api.OffersController.Offers">
+            <summary>
+            Gets a list of all job offers
+            </summary>
+            <returns>A list of job offers</returns>
+        </member>
+        <member name="M:CV2HR.Controllers.Api.OffersController.Offers(System.String,System.Int32)">
+            <summary>
+            Gets a portion of job offers matching the search string, paged
+            </summary>
+            <param name="searchString">Search string to match</param>
+            <param name="pageNo">Page number</param>
+            <returns>A job offer page</returns>
+        </member>
+        <member name="M:CV2HR.Controllers.Api.OffersController.Offers(System.Int32)">
+            <summary>
+            Gets a portion of all job offers, paged
+            </summary>
+            <param name="pageNo">Page number</param>
+            <returns>A job offer page</returns>
+        </member>
+    </members>
+</doc>

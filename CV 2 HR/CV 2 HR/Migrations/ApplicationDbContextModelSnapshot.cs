@@ -99,6 +99,8 @@ namespace CV2HR.Migrations
 
                     b.HasIndex("CompanyId");
 
+                    b.HasIndex("JobTitle");
+
                     b.ToTable("JobOffers");
                 });
 
