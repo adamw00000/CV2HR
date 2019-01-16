@@ -98,9 +98,9 @@
 
                 var uri;
                 if (searchString === '')
-                    uri = 'api/offers/' + pageNo;
+                    uri = 'api/offers?pageNo=' + pageNo;
                 else
-                    uri = 'api/offers/' + searchString + '/' + pageNo;
+                    uri = 'api/offers?searchString=' + searchString + '&pageNo=' + pageNo;
 
                 $.getJSON(uri)
                     .done(function (data) {

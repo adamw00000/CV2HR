@@ -20,41 +20,30 @@ namespace CV2HR.Controllers.Api
         {
             _offerService = offerService;
         }
-
+        
         /// <summary>
         /// Gets a list of all job offers
         /// </summary>
+        /// <param name="searchString">Search string to match</param>
+        /// <param name="pageNo">Page number, if 0, returns a list of all offers</param>
         /// <returns>A list of job offers</returns>
         [HttpGet]
-        public async Task<IActionResult> Offers()
+        public async Task<IActionResult> Offers([FromQuery]string searchString = "", [FromQuery]int pageNo = 0)
         {
-            var offers = await _offerService.GetJobOffersAsync();
-            return Ok(offers);
-        }
+            if (pageNo == 0)
+            {
+                var allOffers = await _offerService.GetJobOffersAsync();
+                return Ok(allOffers);
+            }
 
-        /// <summary>
-        /// Gets a portion of job offers matching the search string, paged
-        /// </summary>
-        /// <param name="searchString">Search string to match</param>
-        /// <param name="pageNo">Page number</param>
-        /// <returns>A job offer page</returns>
-        [HttpGet("{searchString}/{pageNo}")]
-        public async Task<IActionResult> Offers(string searchString, int pageNo)
-        {
-            var offers = await _offerService.GetJobOffersSearchResultPageAsync(searchString, pageNo);
-            return Ok(offers);
-        }
+            if (searchString == "")
+            {
+                var page = await _offerService.GetJobOffersPageAsync(pageNo);
+                return Ok(page);
+            }
 
-        /// <summary>
-        /// Gets a portion of all job offers, paged
-        /// </summary>
-        /// <param name="pageNo">Page number</param>
-        /// <returns>A job offer page</returns>
-        [HttpGet("{pageNo}")]
-        public async Task<IActionResult> Offers(int pageNo)
-        {
-            var page = await _offerService.GetJobOffersPageAsync(pageNo);
-            return Ok(page);
+            var searchPage = await _offerService.GetJobOffersSearchResultPageAsync(searchString, pageNo);
+            return Ok(searchPage);
         }
     }
 }

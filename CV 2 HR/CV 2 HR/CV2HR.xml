@@ -24,26 +24,13 @@
             </summary>
             <returns>A job offer page</returns>
         </member>
-        <member name="M:CV2HR.Controllers.Api.OffersController.Offers">
+        <member name="M:CV2HR.Controllers.Api.OffersController.Offers(System.String,System.Int32)">
             <summary>
             Gets a list of all job offers
             </summary>
-            <returns>A list of job offers</returns>
-        </member>
-        <member name="M:CV2HR.Controllers.Api.OffersController.Offers(System.String,System.Int32)">
-            <summary>
-            Gets a portion of job offers matching the search string, paged
-            </summary>
             <param name="searchString">Search string to match</param>
-            <param name="pageNo">Page number</param>
-            <returns>A job offer page</returns>
-        </member>
-        <member name="M:CV2HR.Controllers.Api.OffersController.Offers(System.Int32)">
-            <summary>
-            Gets a portion of all job offers, paged
-            </summary>
-            <param name="pageNo">Page number</param>
-            <returns>A job offer page</returns>
+            <param name="pageNo">Page number, if 0, returns a list of all offers</param>
+            <returns>A list of job offers</returns>
         </member>
     </members>
 </doc>
